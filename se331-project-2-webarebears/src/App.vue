@@ -1,85 +1,64 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import { useMessageStore } from './stores/message'
+import { storeToRefs } from 'pinia'
+import { ref, watch, onBeforeUnmount } from 'vue'
+import Navigation from '@/components/Navigation.vue'
+
+const store = useMessageStore()
+const { message } = storeToRefs(store)
+
+const flashMessageVisible = ref(false)
+
+let timeoutId: number | undefined
+
+watch(message, (newValue) => {
+  if (newValue?.trim()) {
+    flashMessageVisible.value = true
+    timeoutId = window.setTimeout(() => {
+      flashMessageVisible.value = false
+      store.resetMessage()
+    }, 3000)
+  }
+})
+
+onBeforeUnmount(() => {
+  if (timeoutId) {
+    clearTimeout(timeoutId)
+  }
+})
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+   <Navigation/>
+  <div id="layout" class="font-sans text-center text-gray-800">
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+    <header>
+      <div
+        v-if="flashMessageVisible"
+        class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-yellow-300 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-fade">
+        <h4>{{ message }}</h4>
+      </div>
+   
+ 
+    
+    
+   
+    
+    
+    </header>
 
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
+  
 
-  <RouterView />
+    <RouterView />
+  </div>
+  
 </template>
-
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+#layout {
+  padding-top: 80px; /* Adjust this value based on your navbar's height */
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
 </style>
