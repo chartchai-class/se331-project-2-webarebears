@@ -57,9 +57,7 @@ onBeforeUnmount(() => {
   
 </template>
 <style scoped>
-#layout {
-  padding-top: 80px; /* Adjust this value based on your navbar's height */
-}
+
 
 
 
