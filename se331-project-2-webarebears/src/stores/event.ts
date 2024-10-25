@@ -45,3 +45,4 @@ export const useEventStore = defineStore('event', () => {
     fetchAllEvents, 
   };
 });
+
