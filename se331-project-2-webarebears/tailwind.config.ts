@@ -24,7 +24,9 @@ export default {
         customRed: '#AB3428',
         customOrange: '#F49E4C',
         customBlue:'#3B8EA5',
-        customYellow:'#f5ee9e'
+        customYellow:'#f5ee9e',
+        customDarkBlue:'#2D728F'
+
 
       },
     },

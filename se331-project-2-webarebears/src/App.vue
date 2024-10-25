@@ -4,6 +4,7 @@ import { useMessageStore } from './stores/message'
 import { storeToRefs } from 'pinia'
 import { ref, watch, onBeforeUnmount } from 'vue'
 import Navigation from '@/components/Navigation.vue'
+import Nav from '@/components/Nav.vue'
 
 const store = useMessageStore()
 const { message } = storeToRefs(store)
@@ -30,7 +31,8 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-   <Navigation/>
+  <Nav/>
+ 
   <div id="layout" class="font-sans text-center text-gray-800">
 
     <header>
