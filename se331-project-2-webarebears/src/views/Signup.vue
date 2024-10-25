@@ -1,34 +1,36 @@
 <template>
-    <div class="row">
-      <div class="col-md-6 offset-md-3">
-       
-          <h3 class="text-center mb-4 mt-10">Signup</h3>
-          <hr/>
-          <form>
-            <div class="form-group">
-              <label class="form-label">Email</label>
-              <input type="text" class="form-control" placeholder="Email" />
-            </div>
-            <div class="form-group">
-              <label class="form-label">Password</label>
-              <input type="password" class="form-control" placeholder="Password" />
-            </div>
-            <div class="my-3">
-              <button type="submit" class="btn btn-primary w-100 ">
-                Signup
-              </button>
-            </div>
-          </form>
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <h3 class="text-center mb-4 mt-10">Signup</h3>
+      <hr />
+      <form>
+        <div class="form-group">
+          <label class="form-label">Name</label>
+          <input type="text" class="form-control" placeholder="Name" />
         </div>
-      </div>
-    
-  </template>
-  
-  <script>
-  export default {
-    
-  }
-  </script>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="password" class="form-control" placeholder="Email" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-control" placeholder="Password" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirm Password</label>
+          <input type="password" class="form-control" placeholder="Confirm Password" />
+        </div>
+        <div class="my-3">
+          <button type="submit" class="btn btn-primary w-100">Signup</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {}
+</script>
 
 <style scoped>
 h3 {
@@ -42,13 +44,11 @@ h3 {
 }
 
 .form-label {
- 
   text-align: left;
   color: #495057;
   margin-bottom: 0.5rem; /* Add space below the label */
-  display:block ; /* Make sure the label is on top of the input */
+  display: block; /* Make sure the label is on top of the input */
   margin-left: 150px;
- 
 }
 
 .form-control {
@@ -61,7 +61,9 @@ h3 {
   background-clip: padding-box;
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition:
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
 }
 
 .form-control:focus {
