@@ -1,158 +1,119 @@
 <template>
-  <header :class="{'scrolled-nav': scrollPosition}" class="header">
-    <nav class="nav">
-      <div class="branding">
-        <RouterLink :to="{ name: 'list-view' }" >
-          <img src="@/assets/olympic-games.png" alt="Home" class="w-20 h-20" />
+    <div class="sidebar">
+      <div class="title">Sidebar</div>
+      <div class="menu-items">
+        <!-- Country Details Link -->
+        <RouterLink
+          :to="{ name: 'country-detail-view', params: { id: countryId } }"
+          active-class="active"
+          class="side-btn"
+        >
+          <div class="link-container">Country Details</div>
+        </RouterLink>
+  
+        <!-- Medal Table Link -->
+        <RouterLink
+          :to="{ name: 'medal-detail-view', params: { id: countryId } }"
+          active-class="active"
+          class="side-btn"
+        >
+          <div class="link-container">Medal Table</div>
+        </RouterLink>
+  
+        <!-- Comment Link -->
+        <RouterLink
+          :to="{ name: 'comment-view', params: { id: countryId } }"
+          active-class="active"
+          class="side-btn"
+        >
+          <div class="link-container">Comment</div>
         </RouterLink>
       </div>
-      <!-- Desktop Navigation -->
-      <ul v-show="!mobile" class="navigation">
-        <li>
-          <RouterLink to="/login" class="link">
-            Login
-          </RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/signup" class="link">
-            Sign Up
-          </RouterLink>
-        </li>
-      </ul>
-      <!-- Mobile Icon -->
-      <div class="icon">
-        <i @click="toggleMobileNav" v-show="mobile" class="far fa-bars" :class="{'icon-active': mobileNav}"></i>
-      </div>
-      <!-- Mobile Dropdown Navigation -->
-      <transition name="mobile-nav">
-        <ul v-show="mobileNav" class="dropdown-nav">
-          <li>
-            <RouterLink to="/login" class="link text-gray-800 hover:text-green-500 transition">
-              Login
-            </RouterLink>
-          </li>
-          <li>
-            <RouterLink to="/signup" class="link text-gray-800 hover:text-green-500 transition">
-              Sign Up
-            </RouterLink>
-          </li>
-        </ul>
-      </transition>
-    </nav>
-  </header>
-</template>
-
-<script>
-export default {
-  name: "navigation",
-  data() {
-    return {
-      scrollPosition: null,
-      mobile: false, // Corrected typo
-      mobileNav: null,
-      windowWidth: null,
-    };
-  },
-  methods: {
-    toggleMobileNav() {
-      this.mobileNav = !this.mobileNav;
-    },
-  },
-};
-</script>
-
-<style scoped>
-.header {
-  background-color: white;
-  z-index: 99;
-  width: 100%;
-  position: fixed;
-  height: 80px; /* Set a fixed height for the navbar */
-  line-height: 80px; /* Center the content vertically */
-  transition: 0.5s ease all;
-  top: 0; 
-  left: 0; 
-  margin:0 ; 
-  padding: 0; 
-  color: white;
+    </div>
+  </template>
+  
+  <script setup lang="ts">
+  import { ref, defineProps } from 'vue'
+  
+  // Get the `id` as a prop to use in RouterLink
+  defineProps<{ countryId: string }>()
+  </script>
+  
+  <style scoped>
+.title {
+    color: white;
+    font-size: 24px;
+    margin-top: 10px;
 }
 
-.header .nav {
-  display: flex;
-  flex-direction: row;
-  padding: 0 0;
-  transition: 0.5s ease all;
-  width: 90%;
-  margin: 0 auto;
+.menu-items {
+    display: flex;
+    flex-direction: column;
+    margin-top: 40px;
+    margin-left: 6px;
 }
 
-@media (min-width: 1140px) {
-  .header .nav {
-    max-width: 1140px;
-  }
+.menu-items > * {
+    margin-top: 60px;
 }
 
-.header .nav ul,
-.header .nav .link {
-  font-weight: 500;
-  color: black;
-  list-style: none;
-  text-decoration: none;
+.side-btn {
+    border: none;
+    padding: 16px 0px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    color: white;
+    background-color: transparent;
 }
 
-.header .nav li {
-  text-transform: uppercase;
-  padding: 16px;
-  margin-left: 16px;
+.side-btn:focus {
+    outline: none;
 }
 
-.header .nav .link {
-  font-size: 14px;
-  transition: 0.5s ease all;
-  padding-bottom: 4px;
-  border-bottom: 1px solid transparent;
+.side-btn.active {
+    position: relative;
+    background-color: white;
+    color: teal;
+    font-weight: 600;
+    margin-left: 10px;
+    border-radius: 30px 0 0 30px;
 }
 
-.header .nav .link:hover {
-  color: #00afea;
-  border-color: #00afea;
+.side-btn.active::before {
+    top: -30px;
 }
 
-.header .branding {
-  display: flex;
-  align-items: center;
+.side-btn.active::after {
+    bottom: -30px;
 }
 
-.branding img {
-  width: 80px;
-  height: 80px;
-  transition: 0.5s ease all;
-
+.side-btn.active::before, .side-btn.active::after {
+    position: absolute;
+    content: "";
+    right: 0;
+    height: 30px;
+    width: 30px;
+    background-color: white;
 }
 
-.navigation {
-  display: flex;
-  align-items: center;
-  flex: 1;
-  justify-content: flex-end;
+.side-btn.active .link-container::before {
+    top: -60px;
 }
 
-.icon {
-  display: flex;
-  align-items: center;
-  position: absolute;
-  top: 0;
-  right: 24px;
-  height: 100%;
+.side-btn.active .link-container::after {
+    bottom: -60px;
+    z-index: 99;
 }
 
-.icon i {
-  cursor: pointer;
-  font-size: 24px;
-  transition: 0.8s ease all;
+.side-btn.active .link-container::before, .side-btn.active .link-container::after {
+    position: absolute;
+    content: "";
+    right: 0px;
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    background-color: teal;
 }
-
-.icon-active {
-  transform: rotate(180deg);
-}
-</style>
+  </style>
+  
