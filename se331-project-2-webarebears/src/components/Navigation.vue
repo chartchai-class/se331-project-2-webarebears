@@ -18,6 +18,11 @@
               Sign Up
             </RouterLink>
           </li>
+          <li>
+            <RouterLink to="/viewlist" class="link">
+              View list(for admin)
+            </RouterLink>
+          </li>
         </ul>
         <!-- Mobile Icon -->
         <div class="icon">

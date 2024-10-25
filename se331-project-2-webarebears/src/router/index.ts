@@ -11,6 +11,7 @@ import Comment from '@/views/event/CommentView.vue'
 import nProgress from 'nprogress'
 import EventService from '@/services/Service'
 import { useEventStore } from '@/stores/event'
+import ViewUserList from '@/views/ViewUSerList.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -88,6 +89,11 @@ const router = createRouter({
       path:'/signup',
       name: 'signup',
       component:Signup
+    }
+    ,{
+      path:'/viewlist',
+      name: 'viewlist',
+      component:ViewUserList
     }
   
 
