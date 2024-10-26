@@ -13,21 +13,36 @@ export interface Event {
     };
   };
 }
-
+ 
 export interface Country {
   id: string;
   name: string;
   description: string;
   hostcountry: string;
+  roles: string[];
 }
-
-
+ 
+ 
 export interface Comment {
   name: string
   text: string
   date: string
 }
-
+ 
 export interface MessageState {
   message: string
 }
+
+ 
+export interface User {
+  id: number;
+  email: string;
+  firstname: string;
+  lastname: string;
+  username: string;
+  roles: string[];
+}
+ 
+ 
+ 
+ 

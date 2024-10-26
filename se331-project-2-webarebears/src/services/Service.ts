@@ -65,7 +65,9 @@
 // };
  
  
-import axios from 'axios';
+// import apiClient from './AxiosClient'
+// import type { AxiosResponse } from 'axios'
+import axios from 'axios'
 import type { Country } from '@/type';
  
 const apiClient = axios.create({

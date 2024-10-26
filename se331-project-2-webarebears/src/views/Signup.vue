@@ -1,34 +1,91 @@
+<script setup lang="ts">
+import InputText from '@/components/InputText.vue'
+import * as yup from 'yup'
+import { useField, useForm } from 'vee-validate'
+import { useAuthStore } from '@/stores/auth'
+import { useRouter } from 'vue-router'
+import { useMessageStore } from '@/stores/message'
+
+const messageStore = useMessageStore()
+const router = useRouter()
+const authStore = useAuthStore()
+
+const validationSchema = yup.object({
+    firstname: yup.string().required('First name is required'),
+    lastname: yup.string().required('Last name is required'),
+    email: yup.string().email('Invalid email format').required('Email is required'),
+    password: yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
+})
+
+const { errors, handleSubmit } = useForm({
+    validationSchema,
+    initialValues: {
+        username: '',
+        firstname: '',
+        lastname: '',
+        email: '',
+        password: ''
+    }
+})
+
+const { value: firstname } = useField<string>('firstname')
+const { value: lastname } = useField<string>('lastname')
+const { value: email } = useField<string>('email')
+const { value: password } = useField<string>('password')
+const username = firstname; // Bind username to firstname dynamically
+
+const onSubmit = handleSubmit(async (values) => {
+    try {
+        // Pass username as firstname
+        const user = {
+            ...values,
+            username: values.firstname // Set username to equal firstname
+        }
+
+        await authStore.register(user.email, user.password, user.firstname, user.lastname, user.username)
+        console.log(user.email, user.password, user.firstname, user.lastname, user.username)
+
+        messageStore.updateMessage('Registration successful! Please log in.')
+        setTimeout(() => {
+            messageStore.resetMessage()
+            router.push({ name: 'login' }) // Redirect to the login page after successful registration
+        }, 3000);
+    } catch (error) {
+        messageStore.updateMessage('Registration failed: ' + error.response.data.message)
+        setTimeout(() => {
+            messageStore.resetMessage()
+        }, 3000);
+    }
+})
+</script>
+
 <template>
-  <div class="row pt-20">
-    <div class="col-md-6 offset-md-3">
-      <h3 class="text-center mb-4 mt-10">Signup</h3>
-      <hr />
-      <form>
+  <div class="flex justify-center pt-20">
+    <div class="w-full max-w-md">
+      <h3 class="text-center mb-4 mt-10 text-2xl font-bold">Signup</h3>
+      <form class="space-y-6" @submit.prevent="onSubmit">
         <div class="form-group">
-          <label class="form-label">Name</label>
-          <input type="text" class="form-control" placeholder="Name" />
+          <label for="firstname" class="block text-left text-gray-700">Firstname</label>
+          <InputText v-model="firstname" class="form-control mt-1 w-full p-2 border rounded" placeholder="First Name" :error="errors['firstname']" />
         </div>
         <div class="form-group">
-          <label class="form-label">Email</label>
-          <input type="email" class="form-control" placeholder="Email" />
+          <label for="lastname" class="block text-left text-gray-700">Lastname</label>
+          <InputText v-model="lastname" class="form-control mt-1 w-full p-2 border rounded" placeholder="Last Name" :error="errors['lastname']" />
         </div>
         <div class="form-group">
-          <label class="form-label">Password</label>
-          <input type="password" class="form-control" placeholder="Password" />
+          <label class="block text-left text-gray-700">Email</label>
+          <InputText v-model="email" type="email" class="form-control mt-1 w-full p-2 border rounded" placeholder="Email address" :error="errors['email']" />
         </div>
         <div class="form-group">
-          <label class="form-label">Confirm Password</label>
-          <input
-            type="password"
-            class="form-control"
-            placeholder="Confirm Password"
-          />
+          <label class="block text-left text-gray-700">Password</label>
+          <InputText v-model="password" type="password" class="form-control mt-1 w-full p-2 border rounded" placeholder="Password" :error="errors['password']" />
         </div>
+        <!-- <div class="form-group">
+          <label class="block text-left text-gray-700">Confirm Password</label>
+          <InputText v-model="password" type="password" class="form-control mt-1 w-full p-2 border rounded" placeholder="Confirm Password" :error="errors['password']" />
+        </div> -->
         <div class="my-3">
-          <button
-            @click="submitComment"
-            class="px-4 py-2 bg-customRed text-white rounded hover:bg-customOrange"
-          >
+          <button type="submit" class="px-4 py-2 bg-customRed text-white rounded hover:bg-customOrange">
             Sign up
           </button>
         </div>
@@ -37,56 +94,12 @@
   </div>
 </template>
 
-<script>
-export default {}
-</script>
-
 <style scoped>
+/* You can remove most of your previous CSS since Tailwind handles it now */
 h3 {
   font-weight: bold;
   color: #343a40;
   margin-top: 2rem;
-}
-
-.form-group {
-  margin-bottom: 1.5rem;
-}
-
-.form-label {
-  text-align: left;
-  color: #495057;
-  margin-bottom: 0.5rem; /* Add space below the label */
-  display: block; /* Make sure the label is on top of the input */
-  margin-left: 30%;
-}
-@media (max-width: 430px) {
-  .form-label {
-    margin-left: 8%;
-  }
-  .form-control {
-    max-width: 80%;
-  }
-}
-
-.form-control {
-  width: 500px;
-  padding: 0.75rem;
-  font-size: 1rem;
-  line-height: 1.5;
-  color: #495057;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-  transition:
-    border-color 0.15s ease-in-out,
-    box-shadow 0.15s ease-in-out;
-}
-
-.form-control:focus {
-  border-color: #80bdff;
-  outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
 hr {
