@@ -1,18 +1,22 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import EventListView from '@/views/ListView.vue'
-import LayoutView from '@/views/event/LayoutView.vue'
-import CountryDetail from '@/views/event/CountryDetailView.vue'
-import MedalDetail from '@/views/event/MedalView.vue'
-import NotFoundView from '@/views/NotFoundView.vue'
-import NetworkErrorView from '@/views/NetworkErrorView.vue'
-import Login from '@/views/Login.vue'
-import Signup from '@/views/Signup.vue'
-import Comment from '@/views/event/CommentView.vue'
-import nProgress from 'nprogress'
-import EventService from '@/services/Service'
-import { useEventStore } from '@/stores/event'
-import ViewUserList from '@/views/ViewUSerList.vue'
-import ContactUs from '@/views/ContactUs.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import EventListView from '@/views/ListView.vue';
+import LayoutView from '@/views/event/LayoutView.vue';
+import CountryDetail from '@/views/event/CountryDetailView.vue';
+import MedalDetail from '@/views/event/MedalView.vue';
+import NotFoundView from '@/views/NotFoundView.vue';
+import NetworkErrorView from '@/views/NetworkErrorView.vue';
+import Login from '@/views/Login.vue';
+import Signup from '@/views/Signup.vue';
+import Comment from '@/views/event/CommentView.vue';
+import nProgress from 'nprogress';
+import EventService from '@/services/Service';
+import { useEventStore } from '@/stores/event';
+import { useAuthStore } from '@/stores/auth';
+import ViewUserList from '@/views/ViewUserList.vue';
+import ContactUs from '@/views/ContactUs.vue';
+import Profile from '@/views/Profile.vue';
+
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -28,25 +32,25 @@ const router = createRouter({
       component: LayoutView,
       props: true,
       beforeEnter: async (to, from, next) => {
-        const eventStore = useEventStore()
-        const id = to.params.id as string
+        const eventStore = useEventStore();
+        const id = to.params.id as string;
         try {
-          const event = await EventService.getEvent(id)
+          const event = await EventService.getEvent(id);
           if (event) {
-            eventStore.setEvent(event)
-            next()
+            eventStore.setEvent(event);
+            next();
           } else {
-            next({ name: '404-resource-view', params: { resource: 'country' } })
+            next({ name: '404-resource-view', params: { resource: 'country' } });
           }
         } catch (error) {
-          console.error('Error fetching country data:', error)
-          next({ name: 'network-error-view', params: { resource: 'page' } })
+          console.error('Error fetching country data:', error);
+          next({ name: 'network-error-view', params: { resource: 'page' } });
         }
       },
       children: [
         {
-          path: '', // default path for `/country/:id`
-          redirect: { name: 'country-detail-view' }, // Redirect to Country Details
+          path: '',
+          redirect: { name: 'country-detail-view' },
         },
         {
           path: 'details',
@@ -98,28 +102,49 @@ const router = createRouter({
       path: '/viewlist',
       name: 'viewlist',
       component: ViewUserList,
+      beforeEnter: (to, from, next) => {
+        const authStore = useAuthStore();
+        if (authStore.isAuthenticated && authStore.isAdmin) {
+          next();
+        } else {
+          next({ name: 'login' });
+        }
+      },
     },
     {
       path: '/contactus',
       name: 'contactus',
       component: ContactUs,
     },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: Profile,
+      beforeEnter: (to, from, next) => {
+        const authStore = useAuthStore();
+        if (authStore.isAuthenticated) {
+          next();
+        } else {
+          next({ name: 'login' });
+        }
+      },
+    },
   ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
-      return savedPosition
+      return savedPosition;
     } else {
-      return { top: 0 }
+      return { top: 0 };
     }
   },
-})
+});
 
 router.beforeEach(() => {
-  nProgress.start()
-})
+  nProgress.start();
+});
 
 router.afterEach(() => {
-  nProgress.done()
-})
+  nProgress.done();
+});
 
-export default router
+export default router;
