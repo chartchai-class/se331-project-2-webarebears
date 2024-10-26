@@ -170,7 +170,7 @@ export default {
   h5 {
     text-align: center;
   }
-  p{
+  p {
     font-size: 0.8rem;
   }
   .countdown-unit {
@@ -215,6 +215,9 @@ p {
 
 /* Countdown timer adjustments */
 .countdown-unit {
-  max-width: 60px;
+  max-width: 100px;
+}
+.countdown-unit div {
+  font-size: 20px;
 }
 </style>
