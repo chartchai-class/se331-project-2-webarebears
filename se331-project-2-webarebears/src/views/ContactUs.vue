@@ -1,11 +1,11 @@
 <template>
   <div class="row pt-20">
     <div class="col-md-6 offset-md-3">
-      <h3 class="text-center mb-4 mt-10">Contact Us</h3>
-      <hr />
+      <h3 class="text-center mb-4 mt-10 text-xl font-bold">Contact Us</h3>
+      <hr class="my-4 border-t-1 border-gray-300" />
       <form @submit.prevent="submitForm">
         <div class="form-group">
-          <label class="form-label">First Name</label>
+          <label class="form-label ">First Name</label>
           <input
             v-model="firstName"
             type="text"
@@ -52,7 +52,6 @@
           </button>
         </div>
 
-        <!-- Move flash message here -->
         <div
           v-if="successMessage"
           class="mt-3 bg-customYellow text-customBlue px-4 py-2 rounded-lg shadow-lg"
@@ -132,14 +131,6 @@ h3 {
   display: block; /* Make sure the label is on top of the input */
   margin-left: 30%;
 }
-@media (max-width: 430px) {
-  .form-label {
-    margin-left: 8%;
-  }
-  .form-control{
-    max-width: 80%;
-  }
-}
 
 .form-control {
   width: 500px;
@@ -162,8 +153,22 @@ h3 {
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
+
 hr {
   margin: 1rem auto;
-  width: 40%;
+  width: 35%;
+}
+
+@media (max-width: 430px) {
+  .form-label {
+    margin-left: 8%;
+  }
+  .form-control {
+    max-width: 80%;
+  }
+  hr {
+    width: 80%; /* Adjusted to make the <hr> shorter on mobile */
+    margin: 1rem auto; /* Center the <hr> */
+  }
 }
 </style>

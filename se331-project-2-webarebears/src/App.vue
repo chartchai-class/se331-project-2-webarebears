@@ -3,7 +3,7 @@ import { RouterLink, RouterView } from 'vue-router'
 import { useMessageStore } from './stores/message'
 import { storeToRefs } from 'pinia'
 import { ref, watch, onBeforeUnmount } from 'vue'
-import Navigation from '@/components/Navigation.vue'
+// import Navigation from '@/components/Navigation.vue'
 import Nav from '@/components/Nav.vue'
 
 const store = useMessageStore()

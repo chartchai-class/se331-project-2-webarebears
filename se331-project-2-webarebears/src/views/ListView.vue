@@ -72,7 +72,6 @@ function submitComment() {
 
   commenterName.value = ''
   commentText.value = ''
- 
 }
 
 async function updateKeyword() {
@@ -81,18 +80,24 @@ async function updateKeyword() {
       eventStore.setSearchResults(eventStore.events)
       totalEvents.value = eventStore.events.length
     } else {
-      console.log(`Endpoint: /api/events/search/${keyword.value}?page=${page.value}&size=${pageSize.value}`)
-      await eventStore.searchByKeyword(keyword.value, pageSize.value, page.value)
- 
-      totalEvents.value = eventStore.searchResults?.length || 0;
-      console.log("Total search results:", totalEvents.value)
- 
+      console.log(
+        `Endpoint: /api/events/search/${keyword.value}?page=${page.value}&size=${pageSize.value}`,
+      )
+      await eventStore.searchByKeyword(
+        keyword.value,
+        pageSize.value,
+        page.value,
+      )
+
+      totalEvents.value = eventStore.searchResults?.length || 0
+      console.log('Total search results:', totalEvents.value)
+
       if (totalEvents.value === 0) {
-        console.log("No results found for the search term.")
+        console.log('No results found for the search term.')
       }
     }
   } catch (error) {
-    console.error("Failed to update keyword:", error)
+    console.error('Failed to update keyword:', error)
   }
 }
 </script>
@@ -109,13 +114,7 @@ async function updateKeyword() {
   />
 
   <div class="bg-customBlue py-10">
-    <div class="w-64">
-      <baseInput v-model="keyword" label="Search ..." class="w-full" />
-    </div>
-    <h1 class="text-3xl font-bold text-center mb-6 mt-10 pt-10 text-white">
-      Olympic Medal Table
-    </h1>
-    <div class="w-64 mx-auto">
+    <div class="w-64 mr-20 mx-auto">
       <input
         id="search"
         type="text"
@@ -125,8 +124,11 @@ async function updateKeyword() {
         placeholder="Enter country name"
       />
     </div>
- 
- 
+
+    <h1 class="text-3xl font-bold text-center mb-6 mt-5 pt-5 text-white">
+      Olympic Medal Table
+    </h1>
+
     <div class="w-4/5 mx-auto">
       <div class="block md:hidden">
         <select
@@ -170,11 +172,10 @@ async function updateKeyword() {
 
         <!-- <CountryContent :page="page" :pageSize="pageSize" /> -->
         <CountryContent
-         :events="keyword ? eventStore.searchResults : eventStore.events"
-         :page="page"
-         :pageSize="pageSize"
-          />
- 
+          :events="keyword ? eventStore.searchResults : eventStore.events"
+          :page="page"
+          :pageSize="pageSize"
+        />
       </table>
     </div>
   </div>
@@ -265,6 +266,9 @@ async function updateKeyword() {
 
 /* Card layout for small screens */
 @media (max-width: 430px) {
+  h1{
+    font-size: 25px;
+  }
   table {
     display: block;
     width: 100%;
@@ -301,6 +305,11 @@ async function updateKeyword() {
     content: attr(data-label);
     font-weight: bold;
     color: #4a5568;
+  }
+  input[type='text'] {
+    width: 150px; /* Set a specific width for mobile */
+    font-size: 12px;
+    margin-left: 150px;
   }
 }
 </style>

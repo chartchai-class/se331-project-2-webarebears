@@ -28,7 +28,7 @@
 <script>
 export default {}
 </script>
-
+ -->
 <style scoped>
 h3 {
   font-weight: bold;
@@ -43,8 +43,8 @@ h3 {
 .form-label {
   text-align: left;
   color: #495057;
-  margin-bottom: 0.5rem; 
-  display: block; 
+  margin-bottom: 0.5rem;
+  display: block;
   margin-left: 30%;
 }
 
@@ -72,16 +72,20 @@ h3 {
   .form-label {
     margin-left: 8%;
   }
-  .form-control{
+  .form-control {
     max-width: 80%;
+  }
+  .flex .w-full .max-w-md hr {
+    width: 10%; /* Adjusted to make the <hr> shorter on mobile */
+    margin: 1rem auto; /* Center the <hr> */
   }
 }
 
 hr {
   margin: 1rem auto;
-  width: 40%;
+  width: 95%;
 }
-</style> -->
+</style>
 
 <script setup lang="ts">
 import InputText from '@/components/InputText.vue'
@@ -97,25 +101,27 @@ const authStore = useAuthStore()
 
 const validationSchema = yup.object({
   email: yup.string().required('The email is required'),
-  password: yup.string().required('The password is required')
+  password: yup.string().required('The password is required'),
 })
 
 const { errors, handleSubmit } = useForm({
   validationSchema,
   initialValues: {
     email: '',
-    password: ''
-  }
+    password: '',
+  },
 })
 
 const { value: email } = useField<string>('email')
 const { value: password } = useField<string>('password')
 
-const onSubmit = handleSubmit((values) => {
-  authStore.login(values.email, values.password)
+const onSubmit = handleSubmit(values => {
+  authStore
+    .login(values.email, values.password)
     .then(() => {
       router.push({ name: 'list-view' })
-    }).catch(() => {
+    })
+    .catch(() => {
       messageStore.updateMessage('Could not login')
       setTimeout(() => {
         messageStore.resetMessage()
@@ -127,24 +133,24 @@ const onSubmit = handleSubmit((values) => {
 <template>
   <div class="flex justify-center pt-20">
     <div class="w-full max-w-md">
-      <h3 class="text-center mb-4 mt-10 text-2xl font-bold">Login</h3>
-      <!-- <hr class="my-4 border-t-2 border-gray-300" /> -->
+      <h3 class="text-center mb-4 mt-10 text-xl font-bold">Login</h3>
+      <hr class="my-4 border-t-1 border-gray-300" />
       <form @submit.prevent="onSubmit" class="space-y-4">
         <div class="form-group">
-          <label class="block text-gray-700 text-sm font-semibold mb-1">Email</label>
+          <label class="block ml-4 text-left text-gray-700">Email</label>
           <InputText
             type="text"
-            class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 "
+            class="w-full rounded-md p-3 focus:outline-none focus:ring-2"
             v-model="email"
             placeholder="Email"
             :error="errors['email']"
           />
         </div>
         <div class="form-group">
-          <label class="block text-gray-700 text-sm font-semibold mb-1">Password</label>
+          <label class="block ml-4 text-left text-gray-700">Password</label>
           <InputText
             type="password"
-            class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2"
+            class="w-full rounded-md p-3 focus:outline-none focus:ring-2"
             v-model="password"
             placeholder="Password"
             :error="errors['password']"
