@@ -20,7 +20,7 @@ const router = createRouter({
       path: '/',
       name: 'list-view',
       component: EventListView,
-      props: (route) => ({ page: parseInt(route.query.page?.toString() || '1') })
+      props: route => ({ page: parseInt(route.query.page?.toString() || '1') }),
     },
     {
       path: '/country/:id',
@@ -45,64 +45,65 @@ const router = createRouter({
       },
       children: [
         {
+          path: '', // default path for `/country/:id`
+          redirect: { name: 'country-detail-view' }, // Redirect to Country Details
+        },
+        {
           path: 'details',
           name: 'country-detail-view',
           component: CountryDetail,
-          props: true
+          props: true,
         },
         {
           path: 'medals',
           name: 'medal-detail-view',
           component: MedalDetail,
-          props: true
+          props: true,
         },
         {
           path: 'comment',
           name: 'comment-view',
           component: Comment,
-          props: true
-        }
-
-      ]
+          props: true,
+        },
+      ],
     },
     {
       path: '/404/:resource',
       name: '404-resource-view',
       component: NotFoundView,
-      props: true
+      props: true,
     },
     {
       path: '/:catchAll(.*)',
       name: 'not-found',
-      component: NotFoundView
+      component: NotFoundView,
     },
     {
       path: '/network-error',
       name: 'network-error-view',
-      component: NetworkErrorView
-    },{
-      path:'/login',
-      name: 'login',
-      component:Login
-    }
-    ,{
-      path:'/signup',
-      name: 'signup',
-      component:Signup
-    }
-    ,{
-      path:'/viewlist',
-      name: 'viewlist',
-      component:ViewUserList
+      component: NetworkErrorView,
     },
     {
-      path:'/contactus',
+      path: '/login',
+      name: 'login',
+      component: Login,
+    },
+    {
+      path: '/signup',
+      name: 'signup',
+      component: Signup,
+    },
+    {
+      path: '/viewlist',
+      name: 'viewlist',
+      component: ViewUserList,
+    },
+    {
+      path: '/contactus',
       name: 'contactus',
-      component:ContactUs
-    }
-
-  
-
+      component: ContactUs,
+    },
   ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
@@ -110,7 +111,7 @@ const router = createRouter({
     } else {
       return { top: 0 }
     }
-  }
+  },
 })
 
 router.beforeEach(() => {
@@ -120,7 +121,5 @@ router.beforeEach(() => {
 router.afterEach(() => {
   nProgress.done()
 })
-
-
 
 export default router
