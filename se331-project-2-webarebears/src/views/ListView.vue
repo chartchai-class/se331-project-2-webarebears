@@ -170,7 +170,7 @@ function submitComment() {
       </div>
 
       <!-- Comment List -->
-      <div class="w-full md:w-1/2 flex justify-center ">
+      <div class="w-full md:w-1/2 mb-6 md:mb-0 flex justify-center">
         <div class="border border-gray-300 rounded-lg p-4 max-w-xl w-full">
           <h3 class="text-lg font-semibold mb-4">Messages</h3>
           <ul class="space-y-4">

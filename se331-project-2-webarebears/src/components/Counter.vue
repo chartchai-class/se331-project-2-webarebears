@@ -159,6 +159,7 @@ export default {
   flex-direction: column;
   align-items: center;
   margin: 0 10px 10px;
+  
 }
 
 /* Mobile View */
@@ -180,7 +181,7 @@ export default {
   }
 
   .countdown-unit div {
-    font-size: 0.8rem; /* Smaller label for mobile */
+    font-size: 0.5rem; /* Smaller label for mobile */
   }
 }
 
@@ -199,7 +200,11 @@ export default {
     display: inline-block;
   }
   .countdown-unit {
+    margin: 10px 30px;
     font-size: 5rem; /* Original size for desktop */
+  }
+  .countdown-unit div {
+    font-size: 1rem; /* Smaller label for mobile */
   }
 }
 
@@ -217,7 +222,5 @@ p {
 .countdown-unit {
   max-width: 100px;
 }
-.countdown-unit div {
-  font-size: 20px;
-}
+
 </style>

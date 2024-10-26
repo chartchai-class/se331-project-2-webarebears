@@ -41,7 +41,7 @@ async function submitComment() {
 }
 </script>
 <template>
-   <div class="dashboard">
+   <div class="dashboard mt-20">
    
     <Sidebar :countryId="countryId" />
 

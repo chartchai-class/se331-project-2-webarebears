@@ -12,11 +12,11 @@
         class="w-full mb-4 p-2 border border-gray-300 rounded-lg"
       ></textarea>
       <button
-        @click="submitComment"
-        class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
-      >
-        Submit Comment
-      </button>
+            @click="submitComment"
+            class="px-4 py-2 bg-customRed text-white rounded hover:bg-customOrange"
+          >
+            Submit comment
+          </button>
   
       <ul class="mt-6">
         <li v-for="(comment, index) in comments" :key="index" class="mb-4">
