@@ -72,6 +72,28 @@ function submitComment() {
 
   commenterName.value = ''
   commentText.value = ''
+ 
+}
+
+async function updateKeyword() {
+  try {
+    if (!keyword.value.trim()) {
+      eventStore.setSearchResults(eventStore.events)
+      totalEvents.value = eventStore.events.length
+    } else {
+      console.log(`Endpoint: /api/events/search/${keyword.value}?page=${page.value}&size=${pageSize.value}`)
+      await eventStore.searchByKeyword(keyword.value, pageSize.value, page.value)
+ 
+      totalEvents.value = eventStore.searchResults?.length || 0;
+      console.log("Total search results:", totalEvents.value)
+ 
+      if (totalEvents.value === 0) {
+        console.log("No results found for the search term.")
+      }
+    }
+  } catch (error) {
+    console.error("Failed to update keyword:", error)
+  }
 }
 </script>
 
@@ -93,7 +115,18 @@ function submitComment() {
     <h1 class="text-3xl font-bold text-center mb-6 mt-10 pt-10 text-white">
       Olympic Medal Table
     </h1>
-
+    <div class="w-64 mx-auto">
+      <input
+        id="search"
+        type="text"
+        v-model="keyword"
+        @input="updateKeyword"
+        class="border rounded px-2 py-1 w-full"
+        placeholder="Enter country name"
+      />
+    </div>
+ 
+ 
     <div class="w-4/5 mx-auto">
       <div class="block md:hidden">
         <select
@@ -135,7 +168,13 @@ function submitComment() {
           </tr>
         </thead>
 
-        <CountryContent :page="page" :pageSize="pageSize" />
+        <!-- <CountryContent :page="page" :pageSize="pageSize" /> -->
+        <CountryContent
+         :events="keyword ? eventStore.searchResults : eventStore.events"
+         :page="page"
+         :pageSize="pageSize"
+          />
+ 
       </table>
     </div>
   </div>

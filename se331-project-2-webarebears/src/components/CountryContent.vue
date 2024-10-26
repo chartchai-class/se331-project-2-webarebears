@@ -1,62 +1,51 @@
 <script setup lang="ts">
-import { ref, onMounted, defineProps, watchEffect } from 'vue'
-import { useEventStore } from '@/stores/event'
-import { type Event } from '@/type'
+import { ref, defineProps, watchEffect } from 'vue'
+import type { Event } from '@/type'
 
-const props = defineProps<{ page: number; pageSize: number }>()
 
-const events = ref<Event[]>([])
-const eventStore = useEventStore()
-
-function paginateData() {
-  if (eventStore.events.length === 0) {
-    return;
-  }
-
-  const start = (props.page - 1) * props.pageSize
-  const end = start + props.pageSize
-  events.value = eventStore.events.slice(start, end)
-}
-
-onMounted(async () => {
-  // Fetch events if not already loaded
-  if (eventStore.events.length === 0) {
-    await eventStore; 
-  }
-  paginateData()
-})
+const props = defineProps<{ events: Event[]; page: number; pageSize: number }>()
+const paginatedEvents = ref<Event[]>([])
 
 watchEffect(() => {
-  paginateData()
+  if (props.events && props.events.length > 0) {
+    const start = (props.page - 1) * props.pageSize
+    const end = start + props.pageSize
+    paginatedEvents.value = props.events.slice(start, end)
+  } else {
+    paginatedEvents.value = []
+  }
 })
+
 </script>
 
 <template>
   <tbody>
-    <tr v-for="event in events" :key="event.id" class="hover:bg-gray-50">
+    <tr
+      v-for="event in paginatedEvents"
+      :key="event.id"
+      class="text-white hover:bg-gray-50 hover:text-black"
+    >
       <td class="px-4 py-2 border text-center">
         <img :src="event.flag_url" alt="Flag" class="w-12 h-auto mx-auto" />
       </td>
-      <td class="px-4 py-2 border text-center">
+      <td class="px-4 py-2 border">
         <RouterLink
           :to="{ name: 'layout-view', params: { id: event.id } }"
-          class="text-800 hover:underline"
+          class="text-600 hover:underline"
         >
           {{ event.name }}
         </RouterLink>
       </td>
-      <td class="px-4 py-2 border text-center" data-label="Gold">
+      <td class="px-4 py-2 border text-center">
         {{ event.medals_by_sport?.until_2024?.total?.gold || 0 }}
       </td>
-      <td class="px-4 py-2 border text-center" data-label="Silver">
+      <td class="px-4 py-2 border text-center">
         {{ event.medals_by_sport?.until_2024?.total?.silver || 0 }}
       </td>
-      <td class="px-4 py-2 border text-center" data-label="Bronze">
+      <td class="px-4 py-2 border text-center">
         {{ event.medals_by_sport?.until_2024?.total?.bronze || 0 }}
       </td>
-      <td class="px-4 py-2 border text-center" data-label="Total">
-        {{ event.total_medals }}
-      </td>
+      <td class="px-4 py-2 border text-center">{{ event.total_medals }}</td>
     </tr>
   </tbody>
 </template>
