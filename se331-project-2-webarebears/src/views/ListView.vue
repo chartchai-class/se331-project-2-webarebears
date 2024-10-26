@@ -142,13 +142,11 @@ function submitComment() {
 
   <div class="bg-white py-10">
     <div
-      class="flex flex-col md:flex-row justify-center mt-6 space-x-6 w-4/5 mx-auto"
+      class="flex flex-col md:flex-row justify-center mt-6 w-4/5 mx-auto space-y-6 md:space-y-0 md:space-x-6"
     >
       <!-- Comment Input Area -->
-      <div class="w-full md:w-1/2 mb-6 md:mb-0 flex justify-center">
-        <div
-          class="comment-box max-w-xl w-full p-6 border border-gray-300 rounded-lg"
-        >
+      <div class="w-full md:w-1/2 flex justify-center">
+        <div class="comment-box w-full p-6 border border-gray-300 rounded-lg">
           <h3 class="text-lg font-semibold mb-4">Leave a Cheer up message</h3>
           <input
             v-model="commenterName"
@@ -170,8 +168,10 @@ function submitComment() {
       </div>
 
       <!-- Comment List -->
-      <div class="w-full md:w-1/2 mb-6 md:mb-0 flex justify-center">
-        <div class="border border-gray-300 rounded-lg p-4 max-w-xl w-full">
+      <div class="w-full md:w-1/2 flex justify-center">
+        <div
+          class="comment-list-container border border-gray-300 rounded-lg p-4 w-full"
+        >
           <h3 class="text-lg font-semibold mb-4">Messages</h3>
           <ul class="space-y-4">
             <li
@@ -215,11 +215,13 @@ function submitComment() {
     <p>No countries available.</p>
   </div>
 </template>
+
 <style scoped>
-.comment-box {
+.comment-box,
+.comment-list-container {
   background-color: white;
   border-radius: 8px;
-  width: 100%; /* Full width within the flex container */
+  width: 100%; /* Full width within container */
 }
 
 /* Card layout for small screens */
@@ -239,12 +241,12 @@ function submitComment() {
   }
 
   thead {
-    display: none; /* Hide headers for mobile */
+    display: none;
   }
 
   tr {
-    margin-bottom: 1rem; /* Spacing between cards */
-    border: 1px solid #e2e8f0; /* Optional border */
+    margin-bottom: 1rem;
+    border: 1px solid #e2e8f0;
     border-radius: 8px;
     padding: 1rem;
     background-color: #fff;
@@ -257,7 +259,7 @@ function submitComment() {
   }
 
   td::before {
-    content: attr(data-label); /* Labels for each item */
+    content: attr(data-label);
     font-weight: bold;
     color: #4a5568;
   }
