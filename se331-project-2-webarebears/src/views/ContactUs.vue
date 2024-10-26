@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row pt-20">
     <div class="col-md-6 offset-md-3">
       <h3 class="text-center mb-4 mt-10">Contact Us</h3>
       <hr />
@@ -44,7 +44,12 @@
           ></textarea>
         </div>
         <div class="my-3">
-          <button type="submit" class="btn btn-primary w-100">Submit</button>
+          <button
+            @click="submitComment"
+            class="px-4 py-2 bg-customRed text-white rounded hover:bg-customOrange"
+          >
+            Submit
+          </button>
         </div>
 
         <!-- Move flash message here -->
@@ -110,19 +115,6 @@ export default {
 </script>
 
 <style scoped>
-.flash-message {
-  display: block;
-  animation: fade-in 0.5s ease-in-out;
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
 h3 {
   font-weight: bold;
   color: #343a40;
@@ -136,13 +128,21 @@ h3 {
 .form-label {
   text-align: left;
   color: #495057;
-  margin-bottom: 0.5rem;
-  margin-left: 200px;
-  display: block;
+  margin-bottom: 0.5rem; /* Add space below the label */
+  display: block; /* Make sure the label is on top of the input */
+  margin-left: 30%;
+}
+@media (max-width: 430px) {
+  .form-label {
+    margin-left: 8%;
+  }
+  .form-control{
+    max-width: 80%;
+  }
 }
 
 .form-control {
-  width: 50%;
+  width: 500px;
   padding: 0.75rem;
   font-size: 1rem;
   line-height: 1.5;
@@ -156,30 +156,14 @@ h3 {
     box-shadow 0.15s ease-in-out;
 }
 
-.comment-box {
-  height: 150px;
-  resize: vertical;
-}
-
 .form-control:focus {
   border-color: #80bdff;
   outline: 0;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
-.btn-primary {
-  background-color: white;
-  border-color: #007bff;
-  color: #343a40;
-}
-
-.btn-primary:hover {
-  background-color: #e0e0e0;
-  border-color: #004085;
-  color: #28a745;
-}
-
 hr {
-  margin: 1rem 0;
+  margin: 1rem auto;
+  width: 40%;
 }
 </style>

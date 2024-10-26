@@ -1,59 +1,62 @@
 <template>
-  <div v-if="loaded">
-    <!-- Section with flexbox layout -->
-    <img src="@/assets/cloud1.png" alt="cloud" class="cloud-image" />
+  <div v-if="loaded" class="relative bg-counter mt-20">
     <section
-      class="flex justify-between items-center mx-auto mt-10 layout-container"
+      class="flex flex-col md:flex-row justify-between items-center mx-auto my-2 mt-1 max-w-screen-lg"
     >
-      <!-- h5 title on the left with 40% width -->
-      <h5 v-if="!expired" class="h5-center">
-        A Return to <span> the City of Angels </span>
-      </h5>
+      <div class="text-container">
+        <h5
+          v-if="!expired"
+          class="font-semibold text-3xl text-center text-white"
+        >
+          A Return to <span class="text-customRed"> the City of Angels </span>
+        </h5>
 
-      <h5 v-else class="h5-center">Welcome to Olympic 2028!</h5>
+        <h5 v-else class="font-semibold text-2xl text-center text-white">
+          Welcome to Olympic 2028!
+        </h5>
 
-      <!-- Description on the right with 60% width -->
-      <p class="description-center">
-        In 2028, the world will turn its eyes to Los Angeles as the city
-        prepares to host the Olympic Games for the third time. Known for its
-        dynamic culture, iconic skyline, and innovative spirit, LA will once
-        again take center stage in the global sports arena. With a blend of
-        historic venues and state-of-the-art facilities, athletes from every
-        corner of the globe will come together to compete for glory, inspired by
-        the city’s vibrant energy. As we approach this momentous event, the
-        excitement is building for a truly unforgettable celebration of
-        athleticism, unity, and diversity in the heart of Southern California.
-      </p>
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <p class="text-white text-base text-center mt-1 my-10">
+          In 2028, the world will turn its eyes to Los Angeles as the city
+          prepares to host the Olympic Games for the third time. Known for its
+          dynamic culture, iconic skyline, and innovative spirit, LA will once
+          again take center stage in the global sports arena. With a blend of
+          historic venues and state-of-the-art facilities, athletes from every
+          corner of the globe will come together to compete for glory, inspired
+          by the city’s vibrant energy. As we approach this momentous event, the
+          excitement is building for a truly unforgettable celebration of
+          athleticism, unity, and diversity in the heart of Southern California.
+        </p>
+      </div>
     </section>
-    <div style="text-align: right">
-      <img src="@/assets/cloud1.png" alt="cloud" class="cloud-image-2" />
-    </div>
 
     <!-- Countdown timer below -->
-    <section class="flex text-6xl justify-center content-center mt-8">
-      <div class="years mr-10 relative">
+    <section class="flex flex-wrap justify-center mt-8 text-white">
+      <div class="countdown-unit mr-10 relative">
         {{ displayYears }}
-        <div class="label text-sm absolute">years</div>
+        <div class="text-sm absolute">years</div>
       </div>
 
-      <div class="days mr-10 relative">
+      <div class="countdown-unit mr-10 relative">
         {{ displayDays }}
-        <div class="label text-sm absolute">days</div>
+        <div class="text-sm absolute">days</div>
       </div>
 
-      <div class="hours mr-10 relative">
+      <div class="countdown-unit mr-10 relative">
         {{ displayHours }}
-        <div class="label text-sm absolute">hours</div>
+        <div class="text-sm absolute">hours</div>
       </div>
 
-      <div class="minutes mr-10 relative">
+      <div class="countdown-unit mr-10 relative">
         {{ displayMinutes }}
-        <div class="label text-sm absolute">minutes</div>
+        <div class="text-sm absolute">minutes</div>
       </div>
 
-      <div class="seconds mr-10 relative">
+      <div class="countdown-unit mr-10 relative">
         {{ displaySeconds }}
-        <div class="label text-sm absolute">seconds</div>
+        <div class="text-sm absolute">seconds</div>
       </div>
     </section>
   </div>
@@ -132,48 +135,86 @@ export default {
 </script>
 
 <style scoped>
-.layout-container {
+.bg-counter {
+  background-image: url('@/assets/la.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 20px;
+}
+
+.divider {
+  background-color: white;
+  height: 100%;
+  width: 2px;
+  margin: 0 10px;
+  display: block;
+}
+
+.text-container {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+  margin: 0 10px 10px;
 }
 
-/* Smaller cloud image */
-.cloud-image {
-  width: 100px; /* Set desired width */
-  height: auto;
+/* Mobile View */
+@media (max-width: 430px) {
+  .divider {
+    height: 1px;
+    width: 80%;
+  }
+  h5 {
+    text-align: center;
+  }
+  p{
+    font-size: 0.8rem;
+  }
+  .countdown-unit {
+    font-size: 2rem; /* Adjust font size for smaller screens */
+    margin: 0 10px; /* Adjust margin for better spacing */
+    text-align: center; /* Center text for better visibility */
+  }
+
+  .countdown-unit div {
+    font-size: 0.8rem; /* Smaller label for mobile */
+  }
 }
 
-/* h5 with 40% width */
-.h5-center {
-  font-weight: 600;
-  font-size: 30px;
-  width: 40%;
-  text-align: center;
-  margin-left: 10px;
+/* Desktop View */
+@media (min-width: 431px) {
+  .text-container {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .divider {
+    width: 1px;
+    height: 80%;
+    margin: 0 20px;
+    display: inline-block;
+  }
+  .countdown-unit {
+    font-size: 5rem; /* Original size for desktop */
+  }
 }
 
-/* Description with 60% width */
-.description-center {
-  width: 50%;
-  font-size: 0.875rem;
-  color: #495057;
-  line-height: 1.5;
-  text-align: center;
-  margin-right: 60px;
-  margin-top: 30px;
+h5 {
+  max-width: 600px;
+  padding-bottom: 10px;
+}
+
+p {
+  max-width: 600px;
+  padding-top: 10px;
 }
 
 /* Countdown timer adjustments */
-.seconds {
+.countdown-unit {
   max-width: 60px;
-}
-.cloud-image-2 {
-  width: 180px;
-  height: auto;
-  margin-left: auto; /* Pushes the image to the right */
 }
 </style>

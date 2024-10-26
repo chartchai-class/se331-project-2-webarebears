@@ -1,119 +1,124 @@
 <template>
-    <div class="sidebar">
-      <div class="title">Sidebar</div>
-      <div class="menu-items">
-        <!-- Country Details Link -->
-        <RouterLink
-          :to="{ name: 'country-detail-view', params: { id: countryId } }"
-          active-class="active"
-          class="side-btn"
-        >
-          <div class="link-container">Country Details</div>
-        </RouterLink>
-  
-        <!-- Medal Table Link -->
-        <RouterLink
-          :to="{ name: 'medal-detail-view', params: { id: countryId } }"
-          active-class="active"
-          class="side-btn"
-        >
-          <div class="link-container">Medal Table</div>
-        </RouterLink>
-  
-        <!-- Comment Link -->
-        <RouterLink
-          :to="{ name: 'comment-view', params: { id: countryId } }"
-          active-class="active"
-          class="side-btn"
-        >
-          <div class="link-container">Comment</div>
-        </RouterLink>
-      </div>
+  <div class="sidebar">
+    <div class="title"></div>
+    <div class="menu-items">
+      <!-- Country Details Link -->
+      <RouterLink
+        :to="{ name: 'country-detail-view', params: { id: countryId } }"
+        active-class="active"
+        class="side-btn"
+      >
+        <div class="link-container">Country Details</div>
+      </RouterLink>
+
+      <!-- Medal Table Link -->
+      <RouterLink
+        :to="{ name: 'medal-detail-view', params: { id: countryId } }"
+        active-class="active"
+        class="side-btn"
+      >
+        <div class="link-container">Medal Table</div>
+      </RouterLink>
+
+      <!-- Comment Link -->
+      <RouterLink
+        :to="{ name: 'comment-view', params: { id: countryId } }"
+        active-class="active"
+        class="side-btn"
+      >
+        <div class="link-container">Cheer up</div>
+      </RouterLink>
     </div>
-  </template>
-  
-  <script setup lang="ts">
-  import { ref, defineProps } from 'vue'
-  
-  // Get the `id` as a prop to use in RouterLink
-  defineProps<{ countryId: string }>()
-  </script>
-  
-  <style scoped>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, defineProps } from 'vue'
+
+// Get the `id` as a prop to use in RouterLink
+defineProps<{ countryId: string }>()
+</script>
+
+<style scoped>
+.sidebar {
+  top: 60px;
+  background-color: #3b8ea5; /* Set your desired background color */
+}
 .title {
-    color: white;
-    font-size: 24px;
-    margin-top: 10px;
+  color: white;
+  font-size: 24px;
+  margin-top: 10px;
 }
 
 .menu-items {
-    display: flex;
-    flex-direction: column;
-    margin-top: 40px;
-    margin-left: 6px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+  margin-left: 6px;
 }
 
 .menu-items > * {
-    margin-top: 60px;
+  margin-top: 60px;
 }
 
 .side-btn {
-    border: none;
-    padding: 16px 0px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 500;
-    color: white;
-    background-color: transparent;
+  border: none;
+  padding: 16px 0px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+  background-color: transparent;
 }
 
 .side-btn:focus {
-    outline: none;
+  outline: none;
 }
 
 .side-btn.active {
-    position: relative;
-    background-color: white;
-    color: teal;
-    font-weight: 600;
-    margin-left: 10px;
-    border-radius: 30px 0 0 30px;
+  position: relative;
+  background-color: white;
+  color: #3b8ea5;
+  font-weight: 600;
+  margin-left: 10px;
+  border-radius: 30px 0 0 30px;
 }
 
 .side-btn.active::before {
-    top: -30px;
+  top: -30px;
 }
 
 .side-btn.active::after {
-    bottom: -30px;
+  bottom: -30px;
 }
 
-.side-btn.active::before, .side-btn.active::after {
-    position: absolute;
-    content: "";
-    right: 0;
-    height: 30px;
-    width: 30px;
-    background-color: white;
+.side-btn.active::before,
+.side-btn.active::after {
+  position: absolute;
+  content: '';
+  right: 0;
+  height: 30px;
+  width: 30px;
+  background-color: white;
 }
 
 .side-btn.active .link-container::before {
-    top: -60px;
+  top: -60px;
 }
 
 .side-btn.active .link-container::after {
-    bottom: -60px;
-    z-index: 99;
+  bottom: -60px;
+  z-index: 99;
 }
 
-.side-btn.active .link-container::before, .side-btn.active .link-container::after {
-    position: absolute;
-    content: "";
-    right: 0px;
-    height: 60px;
-    width: 60px;
-    border-radius: 50%;
-    background-color: teal;
+.side-btn.active .link-container::before,
+.side-btn.active .link-container::after {
+  position: absolute;
+  content: '';
+  right: 0px;
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  background-color: #3b8ea5;
 }
-  </style>
-  
+</style>

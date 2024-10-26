@@ -1,34 +1,33 @@
 <template>
-    <div class="row">
-      <div class="col-md-6 offset-md-3">
-       
-          <h3 class="text-center mb-4 mt-10">Login</h3>
-          <hr/>
-          <form>
-            <div class="form-group">
-              <label class="form-label">Email</label>
-              <input type="text" class="form-control" placeholder="Email" />
-            </div>
-            <div class="form-group">
-              <label class="form-label">Password</label>
-              <input type="password" class="form-control" placeholder="Password" />
-            </div>
-            <div class="my-3">
-              <button type="submit" class="btn btn-primary w-100 ">
-                Login
-              </button>
-            </div>
-          </form>
+  <div class="row pt-20">
+    <div class="col-md-6 offset-md-3">
+      <h3 class="text-center mb-4 mt-10">Login</h3>
+      <hr />
+      <form>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="text" class="form-control" placeholder="Email" />
         </div>
-      </div>
-    
-  </template>
-  
-  <script>
-  export default {
-    
-  }
-  </script>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-control" placeholder="Password" />
+        </div>
+        <div class="my-3">
+          <button
+            @click="submitComment"
+            class="px-4 py-2 bg-customRed text-white rounded hover:bg-customOrange"
+          >
+            Login
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {}
+</script>
 
 <style scoped>
 h3 {
@@ -42,13 +41,11 @@ h3 {
 }
 
 .form-label {
- 
   text-align: left;
   color: #495057;
   margin-bottom: 0.5rem; /* Add space below the label */
-  display:block ; /* Make sure the label is on top of the input */
-  margin-left: 150px;
- 
+  display: block; /* Make sure the label is on top of the input */
+  margin-left: 30%;
 }
 
 .form-control {
@@ -61,7 +58,9 @@ h3 {
   background-clip: padding-box;
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition:
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
 }
 
 .form-control:focus {
@@ -69,20 +68,17 @@ h3 {
   outline: 0;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
-
-.btn-primary {
-  background-color: white; /* Keep background color white */
-  border-color: #007bff; /* Keep the border color blue */
-  color: #343a40; /* Use gray-800 for text color */
-}
-
-.btn-primary:hover {
-  background-color: #e0e0e0; /* Optional: Light gray on hover for feedback */
-  border-color: #004085; /* Keep hover border color */
-  color: #28a745; /* Change text color to green-500 on hover */
+@media (max-width: 430px) {
+  .form-label {
+    margin-left: 8%;
+  }
+  .form-control{
+    max-width: 80%;
+  }
 }
 
 hr {
-  margin: 1rem 0;
+  margin: 1rem auto;
+  width: 40%;
 }
 </style>
