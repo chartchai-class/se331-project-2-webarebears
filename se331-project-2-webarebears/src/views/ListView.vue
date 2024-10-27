@@ -29,10 +29,13 @@ const hasPrevPage = computed(() => page.value > 1)
 
 const keyword = ref('')
 const event = computed(() => {
-  return eventStore.currentEvent || eventStore.getEventById(route.params.id as string)
+  return (
+    eventStore.currentEvent ||
+    eventStore.getEventById(route.params.id as string)
+  )
 })
 const countryName = computed(() => {
-  return event.value?.name || 'Unknown Country';
+  return event.value?.name || 'Unknown Country'
 })
 
 onMounted(async () => {
@@ -227,8 +230,9 @@ async function updateKeyword() {
               :key="index"
               class="bg-gray-100 p-4 rounded-lg"
             >
-              <strong>{{ comment.name }}</strong> ({{ comment.date }}):
-              {{ comment.text }} from {{ countryName }}
+              <strong>{{ comment.name }}</strong>
+              <span class="text-gray-600">({{ comment.date }})</span>:
+              {{ comment.text }} from <strong>{{ countryName }}</strong>
             </li>
           </ul>
         </div>

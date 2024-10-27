@@ -80,10 +80,10 @@ async function submitComment() {
   commenterName.value = ''
   commentText.value = ''
 
-  // Refresh the comments list
-  comments.value = [...commentStore.comments]
+  router.push({ name: 'list-view', query: { pageSize: 5, page: 1 } })
+
+  comments.value = commentStore.comments
 }
-router.push({ name: 'list-view', query: { pageSize: 5, page: 1 } })
 </script>
 
 <style scoped>

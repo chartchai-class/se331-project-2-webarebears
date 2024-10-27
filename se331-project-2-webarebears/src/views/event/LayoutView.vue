@@ -17,9 +17,6 @@ const event = computed(
   () => eventStore.currentEvent || eventStore.getEventById(countryId),
 )
 
-
-
-
 const commenterName = ref('')
 const commentText = ref('')
 const comments = ref<
@@ -31,8 +28,8 @@ async function submitComment() {
     alert('Please enter both your name and a comment.')
     return
   }
-   // Use optional chaining to safely access event.name
-   const countryName = event.value?.name || 'Unknown Country'
+  // Use optional chaining to safely access event.name
+  const countryName = event.value?.name || 'Unknown Country'
 
   const newComment = {
     name: commenterName.value,
