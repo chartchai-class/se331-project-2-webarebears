@@ -35,7 +35,6 @@ import { useCommentStore } from '@/stores/comment'
 import { useMessageStore } from '@/stores/message'
 import { useEventStore } from '@/stores/event'
 
-
 const route = useRoute()
 const router = useRouter()
 const commentStore = useCommentStore()
@@ -43,21 +42,19 @@ const messageStore = useMessageStore()
 const eventStore = useEventStore()
 const countryId = route.params.id as string
 
-
 // Define the event
 const event = computed(() => {
   return eventStore.currentEvent || eventStore.getEventById(countryId)
 })
 
-  // Use optional chaining to safely access event.name
-  const countryName = event.value?.name || 'Unknown Country'
+// Use optional chaining to safely access event.name
+const countryName = event.value?.name || 'Unknown Country'
 
 const commenterName = ref('')
 const commentText = ref('')
 const comments = ref<
   { name: string; text: string; date: string; country: string }[]
 >([])
-
 
 // Load existing comments
 comments.value = commentStore.comments
@@ -73,7 +70,7 @@ async function submitComment() {
     name: commenterName.value,
     text: commentText.value,
     date: new Date().toLocaleString(),
-    country: countryName
+    country: countryName,
   }
 
   commentStore.addComment(newComment)
@@ -86,7 +83,7 @@ async function submitComment() {
   // Refresh the comments list
   comments.value = [...commentStore.comments]
 }
-
+router.push({ name: 'list-view', query: { pageSize: 5, page: 1 } })
 </script>
 
 <style scoped>
