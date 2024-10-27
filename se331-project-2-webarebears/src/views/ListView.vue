@@ -19,19 +19,7 @@ const pageSize = ref(Number(route.query.pageSize) || 5)
 const page = ref(Number(route.query.page) || 1)
 const totalEvents = ref(0)
 
-const commenterName = ref('')
-const commentText = ref('')
-const comments = ref<
-  { name: string; text: string; date: string; countryId: string }[]
->([])
-
 const authStore = useAuthStore()
-
-// Load existing comments
-comments.value = commentStore.comments
-
-// Computed property to check if the user is logged in
-const isLoggedIn = computed(() => authStore.isLoggedIn)
 
 const totalPages = computed(() => Math.ceil(totalEvents.value / pageSize.value))
 const hasNextPage = computed(() => page.value < totalPages.value)
@@ -47,6 +35,20 @@ const event = computed(() => {
 const countryName = computed(() => {
   return event.value?.name || 'Unknown Country'
 })
+
+const commenterName = ref('')
+const commentText = ref('')
+const comments = ref<
+  { name: string; text: string; date: string; countryId: string }[]
+>([])
+// Load existing comments for this country
+comments.value = commentStore.getCommentsByCountryId(countryId)
+
+// Load existing comments
+comments.value = commentStore.comments
+
+// Computed property to check if the user is logged in
+const isLoggedIn = computed(() => authStore.isLoggedIn)
 
 onMounted(async () => {
   if (!route.query.pageSize || !route.query.page) {
@@ -90,13 +92,13 @@ function submitComment() {
   }
 
   commentStore.addComment(newComment)
-
   messageStore.updateMessage('Comment successfully posted!')
 
   commenterName.value = ''
   commentText.value = ''
 
   comments.value = commentStore.comments
+  comments.value = commentStore.getCommentsByCountryId(countryId)
 }
 
 function getCountryName(countryId: string) {
@@ -251,7 +253,8 @@ async function updateKeyword() {
             >
               <strong>{{ comment.name }}</strong>
               <span class="text-gray-600">({{ comment.date }})</span>:
-              {{ comment.text }} from <strong>{{ countryName }}</strong>
+              {{ comment.text }} from
+              <strong>{{ getCountryName(comment.countryId) }}</strong>
             </li>
           </ul>
         </div>

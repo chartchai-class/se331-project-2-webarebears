@@ -21,21 +21,24 @@
         Submit
       </button>
     </div>
-    
+
     <!-- Message to prompt users to log in -->
     <div v-else class="text-gray-600 mb-4">
-      Please <RouterLink to="/login" class="text-customRed">log in</RouterLink> to leave a comment.
+      Please
+      <RouterLink to="/login" class="text-customRed">log in</RouterLink> to
+      leave a comment.
     </div>
 
     <ul class="mt-6">
       <li
-        v-for="(comment, index) in comments"
+        v-for="(comment, index) in filteredComments"
         :key="index"
         class="mb-4"
       >
         <strong>{{ comment.name }}</strong>
         <span class="text-gray-600">({{ comment.date }})</span>:
-        {{ comment.text }} from <strong>{{  getCountryName(comment.countryId) }}</strong>
+        {{ comment.text }} from
+        <strong>{{ getCountryName(comment.countryId) }}</strong>
       </li>
     </ul>
   </div>
@@ -71,8 +74,13 @@ const comments = ref<
   { name: string; text: string; date: string; countryId: string }[]
 >([])
 
+// Load existing comments filtered by the current country ID
+const filteredComments = computed(() =>
+  commentStore.getCommentsByCountryId(countryId),
+)
+
 // Load existing comments for this country
-comments.value = commentStore.getCommentsByCountryId(countryId) 
+comments.value = commentStore.getCommentsByCountryId(countryId)
 
 // Load existing comments
 comments.value = commentStore.comments
@@ -100,13 +108,13 @@ async function submitComment() {
   commenterName.value = ''
   commentText.value = ''
 
-  comments.value = commentStore.getCommentsByCountryId(countryId)
+  filteredComments.value = commentStore.getCommentsByCountryId(countryId)
 
   router.push({ name: 'list-view', query: { pageSize: 5, page: 1 } })
 }
 
-  // Function to get the country name based on the country ID
-  function getCountryName(countryId: string) {
+// Function to get the country name based on the country ID
+function getCountryName(countryId: string) {
   const event = eventStore.getEventById(countryId) // Fetch event based on countryId
   return event?.name || 'Unknown Country' // Return country name or default
 }
