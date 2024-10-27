@@ -26,12 +26,5 @@ export const useCommentStore = defineStore('comment', {
     },
     
   },
-  getters: {
-    // Getter to filter comments by countryId
-    getCommentsByCountryId: state => {
-      return (countryId: string) => {
-        return state.comments.filter(comment => comment.countryId === countryId)
-      }
-    },
-  },
+  
 })

@@ -6,7 +6,7 @@ import { useEventStore } from '@/stores/event'
 import { useCommentStore } from '@/stores/comment'
 import CountryContent from '@/components/CountryContent.vue'
 import Counter from '@/components/Counter.vue'
-import { useAuthStore } from '@/stores/auth' 
+import { useAuthStore } from '@/stores/auth'
 
 const route = useRoute()
 const router = useRouter()
@@ -21,11 +21,11 @@ const totalEvents = ref(0)
 
 const commenterName = ref('')
 const commentText = ref('')
-const comments = ref<{ name: string; text: string; date: string; countryId: string }[]>([])
+const comments = ref<
+  { name: string; text: string; date: string; countryId: string }[]
+>([])
 
-
-
-const authStore = useAuthStore() 
+const authStore = useAuthStore()
 
 // Load existing comments
 comments.value = commentStore.comments
@@ -55,6 +55,7 @@ onMounted(async () => {
       query: { pageSize: pageSize.value, page: page.value },
     })
   }
+  comments.value = commentStore.comments
   await eventStore.fetchAllEvents()
   totalEvents.value = eventStore.events.length
 })
@@ -89,7 +90,6 @@ function submitComment() {
   }
 
   commentStore.addComment(newComment)
-
 
   messageStore.updateMessage('Comment successfully posted!')
 
@@ -211,7 +211,8 @@ async function updateKeyword() {
 
   <div class="bg-white py-10">
     <div
-    v-if="isLoggedIn" class="flex flex-col md:flex-row justify-center mt-6 w-4/5 mx-auto space-y-6 md:space-y-0 md:space-x-6"
+      v-if="isLoggedIn"
+      class="flex flex-col md:flex-row justify-center mt-6 w-4/5 mx-auto space-y-6 md:space-y-0 md:space-x-6"
     >
       <!-- Comment Input Area -->
       <div class="w-full md:w-1/2 flex justify-center">
@@ -257,7 +258,9 @@ async function updateKeyword() {
       </div>
     </div>
     <div v-else class="text-gray-600 mb-4">
-      Please <RouterLink to="/login" class="text-customRed">log in</RouterLink> to leave a comment.
+      Please
+      <RouterLink to="/login" class="text-customRed">log in</RouterLink> to
+      leave a comment.
     </div>
   </div>
 
