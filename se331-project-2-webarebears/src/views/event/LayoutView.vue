@@ -16,6 +16,33 @@ const commentStore = useCommentStore()
 const event = computed(
   () => eventStore.currentEvent || eventStore.getEventById(countryId),
 )
+const commenterName = ref('')
+const commentText = ref('')
+const comments = ref<
+  { name: string; text: string; date: string;  }[]
+>([])
+
+async function submitComment() {
+  if (commentText.value.trim() === '' || commenterName.value.trim() === '') {
+    alert('Please enter both your name and a comment.')
+    return
+  }
+
+  const newComment = {
+    name: commenterName.value,
+    text: commentText.value,
+    date: new Date().toLocaleString(),
+    country: event.name,
+  }
+
+  commentStore.addComment(newComment)
+  messageStore.updateMessage('Comment successfully posted!')
+
+  commenterName.value = ''
+  commentText.value = ''
+
+  router.push({ name: 'list-view', query: { pageSize: 5, page: 1 } })
+}
 </script>
 <template>
   <div class="dashboard mt-20">
