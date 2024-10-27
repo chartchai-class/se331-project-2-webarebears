@@ -220,7 +220,7 @@ async function updateKeyword() {
               class="bg-gray-100 p-4 rounded-lg"
             >
               <strong>{{ comment.name }}</strong> ({{ comment.date }}):
-              {{ comment.text }}
+              {{ comment.text }} from {{ comment.country }}
             </li>
           </ul>
         </div>
@@ -266,7 +266,7 @@ async function updateKeyword() {
 
 /* Card layout for small screens */
 @media (max-width: 430px) {
-  h1{
+  h1 {
     font-size: 25px;
   }
   table {

@@ -13,10 +13,14 @@ const eventStore = useEventStore()
 const messageStore = useMessageStore()
 const commentStore = useCommentStore()
 
-const event = computed(() => eventStore.currentEvent || eventStore.getEventById(countryId))
+const event = computed(
+  () => eventStore.currentEvent || eventStore.getEventById(countryId),
+)
 const commenterName = ref('')
 const commentText = ref('')
-const comments = ref<{ name: string; text: string; date: string }[]>([])
+const comments = ref<
+  { name: string; text: string; date: string; country: string }[]
+>([])
 
 async function submitComment() {
   if (commentText.value.trim() === '' || commenterName.value.trim() === '') {
@@ -27,41 +31,38 @@ async function submitComment() {
   const newComment = {
     name: commenterName.value,
     text: commentText.value,
-    date: new Date().toLocaleString()
+    date: new Date().toLocaleString(),
+    country: event.name,
   }
 
-  
   commentStore.addComment(newComment)
   messageStore.updateMessage('Comment successfully posted!')
 
   commenterName.value = ''
   commentText.value = ''
 
-  router.push({name: 'list-view', query:{pageSize: 5 , page: 1}})
+  router.push({ name: 'list-view', query: { pageSize: 5, page: 1 } })
 }
 </script>
 <template>
-   <div class="dashboard mt-20">
-   
+  <div class="dashboard mt-20">
     <Sidebar :countryId="countryId" />
 
-  <div class="content p-4">
-    <div v-if="event">
-      <h1 class="text-3xl font-bold mb-4">{{ event.name }}</h1>
-     
-      <RouterView v-if="event" :key="event.id" :event="event" />
-    </div>
-    <div v-else>
-      <p>Country not found or failed to load.</p>
-    </div>
-   
-  </div>
-</div>
+    <div class="content p-4">
+      <div v-if="event">
+        <h1 class="text-3xl font-bold mb-4">{{ event.name }}</h1>
 
+        <RouterView v-if="event" :key="event.id" :event="event" />
+      </div>
+      <div v-else>
+        <p>Country not found or failed to load.</p>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
-.dashboard{
+.dashboard {
   display: grid;
   grid-template-columns: 1fr 5fr;
   background-color: teal;
@@ -72,10 +73,5 @@ async function submitComment() {
   background-color: white;
   border-radius: 10px;
   margin: 6px 6px 6px 0px;
-
 }
-
-
-
-
 </style>

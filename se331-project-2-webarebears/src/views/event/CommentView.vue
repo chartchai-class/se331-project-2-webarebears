@@ -1,8 +1,6 @@
 <template>
-  <div
-    class="comment-section max-w-lg mx-auto mt-8 p-6 border border-gray-300 rounded-lg shadow-sm"
-  >
-    <h3 class="text-lg font-bold mb-4">Leave a Comment</h3>
+  <div class="comment-section max-w-lg mx-auto mt-8 p-6">
+    <h3 class="text-lg font-bold mb-4">Leave a Cheer up message</h3>
     <input
       v-model="commenterName"
       placeholder="Your name"
@@ -10,22 +8,21 @@
     />
     <textarea
       v-model="commentText"
-      placeholder="Your comment"
+      placeholder="Your Cheer up message"
       class="w-full mb-4 p-2 border border-gray-300 rounded-lg"
     ></textarea>
     <button
       @click="submitComment"
       class="px-4 py-2 bg-customRed text-white rounded hover:bg-customOrange"
     >
-      Submit comment
+      Submit
     </button>
 
     <ul class="mt-6">
       <li v-for="(comment, index) in comments" :key="index" class="mb-4">
         <strong>{{ comment.name }}</strong>
         <span class="text-gray-600">({{ comment.date }})</span>:
-        <p>{{ comment.text }}</p>
-        <p class="text-gray-500 text-sm">Commented on {{ comment.country }}</p>
+        {{ comment.text }} from {{ comment.country }}
       </li>
     </ul>
   </div>
@@ -56,7 +53,7 @@ async function submitComment() {
     name: commenterName.value,
     text: commentText.value,
     date: new Date().toLocaleString(),
-    country: 'Unknown'
+    country: event.name,
   }
 
   commentStore.addComment(newComment)
