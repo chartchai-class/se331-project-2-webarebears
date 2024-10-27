@@ -108,7 +108,7 @@ async function submitComment() {
   commenterName.value = ''
   commentText.value = ''
 
-  filteredComments.value = commentStore.getCommentsByCountryId(countryId)
+  
 
   router.push({ name: 'list-view', query: { pageSize: 5, page: 1 } })
 }
