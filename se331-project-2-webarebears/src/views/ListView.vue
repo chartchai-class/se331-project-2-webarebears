@@ -6,7 +6,7 @@ import { useEventStore } from '@/stores/event'
 import { useCommentStore } from '@/stores/comment'
 import CountryContent from '@/components/CountryContent.vue'
 import Counter from '@/components/Counter.vue'
-import backgroundImage from '@/assets/la.jpg'
+import { useAuthStore } from '@/stores/auth' 
 
 const route = useRoute()
 const router = useRouter()
@@ -21,7 +21,17 @@ const totalEvents = ref(0)
 
 const commenterName = ref('')
 const commentText = ref('')
-const comments = ref<{ name: string; text: string; date: string }[]>([])
+const comments = ref<{ name: string; text: string; date: string; countryId: string }[]>([])
+
+
+
+const authStore = useAuthStore() 
+
+// Load existing comments
+comments.value = commentStore.comments
+
+// Computed property to check if the user is logged in
+const isLoggedIn = computed(() => authStore.isLoggedIn)
 
 const totalPages = computed(() => Math.ceil(totalEvents.value / pageSize.value))
 const hasNextPage = computed(() => page.value < totalPages.value)
@@ -74,17 +84,25 @@ function submitComment() {
   const newComment = {
     name: commenterName.value,
     text: commentText.value,
-    country: countryName,
+    countryId: countryId,
     date: new Date().toLocaleString(),
   }
 
-  comments.value.push(newComment)
+  commentStore.addComment(newComment)
+
+
   messageStore.updateMessage('Comment successfully posted!')
 
   commenterName.value = ''
   commentText.value = ''
+
+  comments.value = commentStore.comments
 }
 
+function getCountryName(countryId: string) {
+  const event = eventStore.getEventById(countryId) // Fetch event based on countryId
+  return event?.name || 'Unknown Country' // Return country name or default
+}
 async function updateKeyword() {
   try {
     if (!keyword.value.trim()) {
@@ -193,7 +211,7 @@ async function updateKeyword() {
 
   <div class="bg-white py-10">
     <div
-      class="flex flex-col md:flex-row justify-center mt-6 w-4/5 mx-auto space-y-6 md:space-y-0 md:space-x-6"
+    v-if="isLoggedIn" class="flex flex-col md:flex-row justify-center mt-6 w-4/5 mx-auto space-y-6 md:space-y-0 md:space-x-6"
     >
       <!-- Comment Input Area -->
       <div class="w-full md:w-1/2 flex justify-center">
@@ -237,6 +255,9 @@ async function updateKeyword() {
           </ul>
         </div>
       </div>
+    </div>
+    <div v-else class="text-gray-600 mb-4">
+      Please <RouterLink to="/login" class="text-customRed">log in</RouterLink> to leave a comment.
     </div>
   </div>
 

@@ -71,6 +71,9 @@ const comments = ref<
   { name: string; text: string; date: string; countryId: string }[]
 >([])
 
+// Load existing comments for this country
+comments.value = commentStore.getCommentsByCountryId(countryId) 
+
 // Load existing comments
 comments.value = commentStore.comments
 
@@ -99,6 +102,7 @@ async function submitComment() {
 
   comments.value = commentStore.comments
 
+  comments.value = commentStore.getCommentsByCountryId(countryId)
 
   router.push({ name: 'list-view', query: { pageSize: 5, page: 1 } })
 }

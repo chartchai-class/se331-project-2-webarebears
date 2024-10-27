@@ -17,35 +17,6 @@ const event = computed(
   () => eventStore.currentEvent || eventStore.getEventById(countryId),
 )
 
-const commenterName = ref('')
-const commentText = ref('')
-const comments = ref<
-  { name: string; text: string; date: string; country: string }[]
->([])
-
-async function submitComment() {
-  if (commentText.value.trim() === '' || commenterName.value.trim() === '') {
-    alert('Please enter both your name and a comment.')
-    return
-  }
-  // Use optional chaining to safely access event.name
-  const countryName = event.value?.name || 'Unknown Country'
-
-  const newComment = {
-    name: commenterName.value,
-    text: commentText.value,
-    country: countryName,
-    date: new Date().toLocaleString(),
-  }
-
-  commentStore.addComment(newComment)
-  messageStore.updateMessage('Comment successfully posted!')
-
-  commenterName.value = ''
-  commentText.value = ''
-
-  router.push({ name: 'list-view', query: { pageSize: 5, page: 1 } })
-}
 </script>
 <template>
   <div class="dashboard mt-20">
