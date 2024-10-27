@@ -13,6 +13,7 @@ const router = useRouter()
 const eventStore = useEventStore()
 const messageStore = useMessageStore()
 const commentStore = useCommentStore()
+const countryId = route.params.id as string
 
 const pageSize = ref(Number(route.query.pageSize) || 5)
 const page = ref(Number(route.query.page) || 1)
@@ -27,6 +28,12 @@ const hasNextPage = computed(() => page.value < totalPages.value)
 const hasPrevPage = computed(() => page.value > 1)
 
 const keyword = ref('')
+const event = computed(() => {
+  return eventStore.currentEvent || eventStore.getEventById(route.params.id as string)
+})
+const countryName = computed(() => {
+  return event.value?.name || 'Unknown Country';
+})
 
 onMounted(async () => {
   if (!route.query.pageSize || !route.query.page) {
@@ -51,7 +58,6 @@ function updatePageSize(size: number) {
   page.value = 1
 }
 
-
 function changePage(newPage: number) {
   page.value = newPage
 }
@@ -65,6 +71,7 @@ function submitComment() {
   const newComment = {
     name: commenterName.value,
     text: commentText.value,
+    country: countryName,
     date: new Date().toLocaleString(),
   }
 
@@ -221,7 +228,7 @@ async function updateKeyword() {
               class="bg-gray-100 p-4 rounded-lg"
             >
               <strong>{{ comment.name }}</strong> ({{ comment.date }}):
-              {{ comment.text }} from {{ country.name }}
+              {{ comment.text }} from {{ countryName }}
             </li>
           </ul>
         </div>

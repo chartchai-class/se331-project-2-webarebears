@@ -27,6 +27,7 @@ export interface Comment {
   name: string
   text: string
   date: string
+  country: string
 }
  
 export interface MessageState {

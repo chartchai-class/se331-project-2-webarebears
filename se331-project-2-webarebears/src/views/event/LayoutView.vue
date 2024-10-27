@@ -16,10 +16,14 @@ const commentStore = useCommentStore()
 const event = computed(
   () => eventStore.currentEvent || eventStore.getEventById(countryId),
 )
+
+
+
+
 const commenterName = ref('')
 const commentText = ref('')
 const comments = ref<
-  { name: string; text: string; date: string;  }[]
+  { name: string; text: string; date: string; country: string }[]
 >([])
 
 async function submitComment() {
@@ -27,12 +31,14 @@ async function submitComment() {
     alert('Please enter both your name and a comment.')
     return
   }
+   // Use optional chaining to safely access event.name
+   const countryName = event.value?.name || 'Unknown Country'
 
   const newComment = {
     name: commenterName.value,
     text: commentText.value,
+    country: countryName,
     date: new Date().toLocaleString(),
-    country: event.name,
   }
 
   commentStore.addComment(newComment)

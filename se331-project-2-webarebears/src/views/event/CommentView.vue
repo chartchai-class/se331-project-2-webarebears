@@ -22,32 +22,47 @@
       <li v-for="(comment, index) in comments" :key="index" class="mb-4">
         <strong>{{ comment.name }}</strong>
         <span class="text-gray-600">({{ comment.date }})</span>:
-        {{ comment.text }} from {{ country.name }}
+        {{ comment.text }} from <strong>{{ countryName }}</strong>
       </li>
     </ul>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useCommentStore } from '@/stores/comment'
 import { useMessageStore } from '@/stores/message'
-import EventService from '@/services/Service'
-import type { Country, Event } from '@/type'
+import { useEventStore } from '@/stores/event'
+
 
 const route = useRoute()
 const router = useRouter()
 const commentStore = useCommentStore()
 const messageStore = useMessageStore()
-const country = ref<Country | null>(null)
-const events = ref<Event[]>([])
 const eventStore = useEventStore()
+const countryId = route.params.id as string
+
+
+// Define the event
+const event = computed(() => {
+  return eventStore.currentEvent || eventStore.getEventById(countryId)
+})
+
+  // Use optional chaining to safely access event.name
+  const countryName = event.value?.name || 'Unknown Country'
 
 const commenterName = ref('')
 const commentText = ref('')
-const comments = ref<{ name: string; text: string; date: string }[]>([])
+const comments = ref<
+  { name: string; text: string; date: string; country: string }[]
+>([])
 
+
+// Load existing comments
+comments.value = commentStore.comments
+
+// Submit comment
 async function submitComment() {
   if (commentText.value.trim() === '' || commenterName.value.trim() === '') {
     alert('Please enter both your name and a comment.')
@@ -58,57 +73,20 @@ async function submitComment() {
     name: commenterName.value,
     text: commentText.value,
     date: new Date().toLocaleString(),
+    country: countryName
   }
 
   commentStore.addComment(newComment)
   messageStore.updateMessage('Comment successfully posted!')
 
+  // Reset fields
   commenterName.value = ''
   commentText.value = ''
 
-  router.push({ name: 'list-view', query: { pageSize: 5, page: 1 } })
-}
-// Load country and events data on mount
-onMounted(async () => {
-  try {
-    const id = route.params.id as string
-    country.value = await EventService.getCountry(id)
-  } catch (err) {
-    error.value = (err as Error).message
-  }
-
-  // Fetch events if not already loaded
-  if (eventStore.events.length === 0) {
-    await eventStore
-  }
-  paginateData()
-
-  // Find the event that matches the country ID
-  if (country.value) {
-    selectedEvent.value =
-      eventStore.events.find(event => event.id === country.value?.id) || null
-  }
-})
-
-// Function to paginate events
-function paginateData() {
-  if (eventStore.events.length === 0) return
-
-  const page = 1 // Set default page number
-  const pageSize = 10 // Set default page size
-
-  const start = (page - 1) * pageSize
-  const end = start + pageSize
-  events.value = eventStore.events.slice(start, end)
+  // Refresh the comments list
+  comments.value = [...commentStore.comments]
 }
 
-// Watch for changes in eventStore data and update events
-watchEffect(() => {
-  paginateData()
-})
-
-// Optionally, load existing comments if needed.
-comments.value = commentStore.comments
 </script>
 
 <style scoped>
