@@ -6,7 +6,7 @@ export const useCommentStore = defineStore('comment', {
       name: string
       text: string
       date: string
-      country: string
+      countryId: string
     }[],
   }),
   actions: {
@@ -14,7 +14,7 @@ export const useCommentStore = defineStore('comment', {
       name: string
       text: string
       date: string
-      country: string
+      countryId: string
     }) {
       this.comments.push(comment)
     },

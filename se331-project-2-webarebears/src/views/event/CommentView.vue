@@ -35,7 +35,7 @@
       >
         <strong>{{ comment.name }}</strong>
         <span class="text-gray-600">({{ comment.date }})</span>:
-        {{ comment.text }} from <strong>{{ countryName }}</strong>
+        {{ comment.text }} from <strong>{{  getCountryName(comment.countryId) }}</strong>
       </li>
     </ul>
   </div>
@@ -68,7 +68,7 @@ const countryName = event.value?.name || 'Unknown Country'
 const commenterName = ref('')
 const commentText = ref('')
 const comments = ref<
-  { name: string; text: string; date: string; country: string }[]
+  { name: string; text: string; date: string; countryId: string }[]
 >([])
 
 // Load existing comments
@@ -87,7 +87,7 @@ async function submitComment() {
     name: commenterName.value,
     text: commentText.value,
     date: new Date().toLocaleString(),
-    country: countryName,
+    countryId: countryId,
   }
 
   commentStore.addComment(newComment)
@@ -99,7 +99,14 @@ async function submitComment() {
 
   comments.value = commentStore.comments
 
+
   router.push({ name: 'list-view', query: { pageSize: 5, page: 1 } })
+}
+
+  // Function to get the country name based on the country ID
+  function getCountryName(countryId: string) {
+  const event = eventStore.getEventById(countryId) // Fetch event based on countryId
+  return event?.name || 'Unknown Country' // Return country name or default
 }
 </script>
 
