@@ -51,6 +51,7 @@ function updatePageSize(size: number) {
   page.value = 1
 }
 
+
 function changePage(newPage: number) {
   page.value = newPage
 }
@@ -220,7 +221,7 @@ async function updateKeyword() {
               class="bg-gray-100 p-4 rounded-lg"
             >
               <strong>{{ comment.name }}</strong> ({{ comment.date }}):
-              {{ comment.text }} from {{ comment.country }}
+              {{ comment.text }} from {{ country.name }}
             </li>
           </ul>
         </div>
