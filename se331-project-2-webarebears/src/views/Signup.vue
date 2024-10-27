@@ -66,7 +66,7 @@ const onSubmit = handleSubmit(async values => {
     messageStore.updateMessage('Registration successful! Please log in.')
     setTimeout(() => {
       messageStore.resetMessage()
-      router.push({ name: 'login' }) 
+      router.push({ name: 'login' })
     }, 3000)
   } catch (error) {
     messageStore.updateMessage(
