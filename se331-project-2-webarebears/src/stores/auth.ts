@@ -135,6 +135,9 @@ export const useAuthStore = defineStore('auth', {
     isAdmin(): boolean {
       return this.user?.roles.includes('ROLE_ADMIN');
     },
+    isLoggedIn(): boolean {
+      return this.token !== null && this.user !== null; // Check both token and user
+    },
   },
   actions: {
     checkAuthStatus() {
