@@ -1,21 +1,43 @@
 <script setup lang="ts">
 import { ref, defineProps, watchEffect } from 'vue'
 import type { Event } from '@/type'
+import apiClient from '@/services/AxiosClient'
+import { useMessageStore } from '@/stores/message'
+import { useEventStore } from '@/stores/event'
+import { useAuthStore } from '@/stores/auth';
 
+const messageStore = useMessageStore()
+const eventStore = useEventStore()
+const authStore = useAuthStore();
 
 const props = defineProps<{ events: Event[]; page: number; pageSize: number }>()
 const paginatedEvents = ref<Event[]>([])
 
 watchEffect(() => {
   if (props.events && props.events.length > 0) {
+    const sortedEvents = [...props.events].sort((a, b) => (b.total_medals || 0) - (a.total_medals || 0))
     const start = (props.page - 1) * props.pageSize
     const end = start + props.pageSize
-    paginatedEvents.value = props.events.slice(start, end)
+    paginatedEvents.value = sortedEvents.slice(start, end)
   } else {
     paginatedEvents.value = []
   }
 })
 
+async function deleteEvent(id: string) {
+  if (!authStore.isAdmin) {
+    messageStore.updateMessage('Unauthorized action. Admins only.');
+    return;
+  }
+  try {
+    await apiClient.delete(`/api/countries/${id}`)
+    messageStore.updateMessage('Event deleted successfully!')
+    await eventStore.fetchAllEvents()
+  } catch (error) {
+    console.error('Failed to delete event:', error)
+    messageStore.updateMessage('Failed to delete event.')
+  }
+}
 </script>
 
 <template>
@@ -37,25 +59,32 @@ watchEffect(() => {
         </RouterLink>
       </td>
       <td class="px-4 py-2 border text-center">
-        {{ event.medals_by_sport?.until_2024?.total?.gold || 0 }}
+        {{ event.gold_medals || 0 }}
       </td>
       <td class="px-4 py-2 border text-center">
-        {{ event.medals_by_sport?.until_2024?.total?.silver || 0 }}
+        {{ event.silver_medals || 0 }}
       </td>
       <td class="px-4 py-2 border text-center">
-        {{ event.medals_by_sport?.until_2024?.total?.bronze || 0 }}
+        {{ event.bronze_medals || 0 }}
       </td>
       <td class="px-4 py-2 border text-center">{{ event.total_medals }}</td>
+      <td class="px-4 py-2 border text-center" v-if="authStore.isAdmin">
+        <button 
+          @click="deleteEvent(event.id)" 
+          class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-700"
+        >
+          Delete
+        </button>
+      </td>
     </tr>
   </tbody>
 </template>
+
 <style scoped>
-/* General styles */
 .text-white {
   color: white;
 }
 
-/* Card layout for small screens */
 @media (max-width: 767px) {
   table {
     display: block;
@@ -72,12 +101,12 @@ watchEffect(() => {
   }
 
   thead {
-    display: none; /* Hide headers for mobile */
+    display: none;
   }
 
   tr {
-    margin-bottom: 1rem; /* Spacing between cards */
-    border: 1px solid #e2e8f0; /* Optional border */
+    margin-bottom: 1rem; 
+    border: 1px solid #e2e8f0;
     border-radius: 8px;
     padding: 1rem;
     background-color: #fff;
@@ -86,25 +115,24 @@ watchEffect(() => {
   td {
     padding: 0.5rem 0;
     display: flex;
-    flex-direction: column; /* Stack elements vertically */
-    justify-content: center; /* Center vertically */
-    align-items: center; /* Center horizontally */
-    color: black; /* Ensuring text is black in mobile */
-    text-align: center; /* Centering text */
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    color: black; 
+    text-align: center; 
   }
 
   td::before {
-    content: attr(data-label); /* Labels for each item */
+    content: attr(data-label); 
     font-weight: bold;
-    color: black; /* Change to black for better visibility */
-    display: block; /* Display labels above the values */
-    margin-bottom: 0.5rem; /* Space between label and value */
+    color: black;
+    display: block; 
+    margin-bottom: 0.5rem; 
   }
 }
 
-/* Default hover styles */
 tr:hover {
-  background-color: white; /* Your hover color */
-  color: black; /* Change this to your desired hover text color */
+  background-color: white; 
+  color: black; 
 }
 </style>

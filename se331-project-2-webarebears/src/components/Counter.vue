@@ -175,13 +175,13 @@ export default {
     font-size: 0.8rem;
   }
   .countdown-unit {
-    font-size: 2rem; /* Adjust font size for smaller screens */
-    margin: 0 10px; /* Adjust margin for better spacing */
-    text-align: center; /* Center text for better visibility */
+    font-size: 2rem;
+    margin: 0 10px;
+    text-align: center; 
   }
 
   .countdown-unit div {
-    font-size: 0.5rem; /* Smaller label for mobile */
+    font-size: 0.5rem; 
   }
 }
 
@@ -201,10 +201,10 @@ export default {
   }
   .countdown-unit {
     margin: 10px 30px;
-    font-size: 5rem; /* Original size for desktop */
+    font-size: 5rem; 
   }
   .countdown-unit div {
-    font-size: 1rem; /* Smaller label for mobile */
+    font-size: 1rem; 
   }
 }
 

@@ -1,113 +1,49 @@
-<!-- <template>
-    <div>
-      <h1 class="text-2xl font-bold mb-4">User List</h1>
-      <table class="min-w-full bg-white">
-        <thead>
-          <tr>
-            <th class="px-4 py-2 border">ID</th>
-            <th class="px-4 py-2 border">First Name</th>
-            <th class="px-4 py-2 border">Last Name</th>
-            <th class="px-4 py-2 border">Username</th>
-            <th class="px-4 py-2 border">Email</th>
-            <th class="px-4 py-2 border">Roles</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="user in users" :key="user.id" class="text-center">
-            <td class="border px-4 py-2">{{ user.id }}</td>
-            <td class="border px-4 py-2">{{ user.firstname }}</td>
-            <td class="border px-4 py-2">{{ user.lastname }}</td>
-            <td class="border px-4 py-2">{{ user.username }}</td>
-            <td class="border px-4 py-2">{{ user.email }}</td>
-            <td class="border px-4 py-2">{{ user.roles.join(', ') }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+<template>
+  <div class="user-management-container">
+  <h1 class="title">User Management</h1>
+  <div class="user-table">
+  <div
+          v-for="user in users"
+          :key="user.id"
+          class="user-row"
+  >
+  <div class="user-info">
+  <strong>Username:</strong>
+  <span>{{ user.username }}</span>
+  </div>
+  <div class="user-info">
+  <strong>Email:</strong>
+  <span>{{ user.email }}</span>
+  </div>
+  <div class="user-info">
+  <strong>Roles:</strong>
+  <span>{{ user.roles.join(", ") }}</span>
+  </div>
+  <div class="user-actions">
+  <button
+              v-if="!user.roles.includes('ROLE_ADMIN')"
+              @click="upgradeUserToAdmin(user.id)"
+              class="action-button upgrade-button"
+  >
+              Upgrade to Admin
+  </button>
+  <button
+              v-if="user.roles.includes('ROLE_ADMIN')"
+              @click="downgradeUserToRegular(user.id)"
+              class="action-button downgrade-button"
+  >
+              Downgrade to User
+  </button>
+  </div>
+  </div>
+  </div>
+  </div>
   </template>
-  
-  <script lang="ts">
-  import { defineComponent, onMounted, ref } from 'vue';
-  import { useAuthStore } from '@/stores/auth';
-  import apiClient from '@/services/AxiosClient';
-  
-  export default defineComponent({
-    name: 'ViewUserList',
-    setup() {
-      const users = ref([]);
-      const authStore = useAuthStore();
-  
-      onMounted(async () => {
-        try {
-          const response = await apiClient.get('/api/users', {
-            headers: {
-              Authorization: `Bearer ${authStore.token}`
-            }
-          });
-          users.value = response.data;
-        } catch (error) {
-          console.error('Failed to fetch user data:', error);
-        }
-      });
-  
-      return { users };
-    }
-  });
-  </script>
-  
-  <style scoped>
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-  }
-  th {
-    background-color: #f4f4f4;
-    font-weight: bold;
-  }
-  </style>
-   -->
-
-   <template>
-    <div>
-      <h1>User Management</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Roles</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="user in users" :key="user.id">
-            <td>{{ user.username }}</td>
-            <td>{{ user.email }}</td>
-            <td>{{ user.roles.join(", ") }}</td>
-            <td>
-              <button v-if="!user.roles.includes('ROLE_ADMIN')" @click="upgradeUserToAdmin(user.id)">
-                Upgrade to Admin
-              </button>
-              <button v-if="user.roles.includes('ROLE_ADMIN')" @click="downgradeUserToRegular(user.id)">
-                Downgrade to User
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </template>
-  
+   
   <script setup>
   import { ref, onMounted } from 'vue';
   import apiClient from '@/services/AxiosClient';
-  
   const users = ref([]);
-  
   const fetchUsers = async () => {
     try {
       const response = await apiClient.get('/api/users');
@@ -116,7 +52,6 @@
       console.error("Error fetching users:", error);
     }
   };
-  
   const upgradeUserToAdmin = async (id) => {
     try {
       await apiClient.post(`/api/users/${id}/upgrade`);
@@ -125,7 +60,6 @@
       console.error("Error upgrading user to admin:", error);
     }
   };
-  
   const downgradeUserToRegular = async (id) => {
     try {
       await apiClient.post(`/api/users/${id}/downgrade`);
@@ -134,7 +68,104 @@
       console.error("Error downgrading user to regular:", error);
     }
   };
-  
   onMounted(fetchUsers);
   </script>
+   
+  <style scoped>
+  .user-management-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+    font-family: Arial, sans-serif;
+    margin-top: 100px;
+  }
+   
+  .title {
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #2c3e50;
+  }
+   
+  /* Desktop view */
+  .user-table {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+   
+  .user-row {
+    display: table-row;
+  }
+   
+  .user-info, .user-actions {
+    display: table-cell;
+    padding: 0.75rem;
+    border-bottom: 1px solid #ddd;
+    color: #34495e;
+  }
+   
+  .user-actions {
+    text-align: right;
+  }
+   
+  .user-info strong {
+    font-weight: bold;
+  }
+   
+  /* Mobile view */
+  @media (max-width: 600px) {
+    .user-table {
+      display: block;
+    }
+   
+    .user-row {
+      display: block;
+      margin-bottom: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 0.75rem;
+    }
+   
+    .user-info, .user-actions {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+    }
+   
+    .user-actions {
+      flex-direction: column;
+      text-align: left;
+    }
+  }
+   
+  .action-button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #fff;
+    margin-right: 0.5rem;
+    transition: background-color 0.3s ease;
+  }
+   
+  .upgrade-button {
+    background-color: #27ae60;
+  }
+   
+  .upgrade-button:hover {
+    background-color: #2ecc71;
+  }
+   
+  .downgrade-button {
+    background-color: #e74c3c;
+  }
+   
+  .downgrade-button:hover {
+    background-color: #c0392b;
+  }
+  </style>
   
+  has context menu

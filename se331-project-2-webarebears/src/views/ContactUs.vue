@@ -73,7 +73,7 @@ export default {
       lastName: '',
       email: '',
       message: '',
-      successMessage: '', // To hold the success message
+      successMessage: '', 
     }
   },
   methods: {
@@ -94,10 +94,10 @@ export default {
       })
       const result = await response.json()
       if (result.success) {
-        this.successMessage = 'Your message has been sent successfully!' // Set success message
-        this.resetForm() // Reset the form
+        this.successMessage = 'Your message has been sent successfully!' 
+        this.resetForm() 
         setTimeout(() => {
-          this.successMessage = '' // Clear message after 3 seconds
+          this.successMessage = '' 
         }, 3000)
         console.log(result)
       }
@@ -127,8 +127,8 @@ h3 {
 .form-label {
   text-align: left;
   color: #495057;
-  margin-bottom: 0.5rem; /* Add space below the label */
-  display: block; /* Make sure the label is on top of the input */
+  margin-bottom: 0.5rem; 
+  display: block;
   margin-left: 30%;
 }
 
@@ -167,8 +167,8 @@ hr {
     max-width: 80%;
   }
   hr {
-    width: 80%; /* Adjusted to make the <hr> shorter on mobile */
-    margin: 1rem auto; /* Center the <hr> */
+    width: 80%; 
+    margin: 1rem auto; 
   }
 }
 </style>

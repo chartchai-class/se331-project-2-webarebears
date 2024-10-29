@@ -35,14 +35,14 @@
 <script setup lang="ts">
 import { ref, defineProps } from 'vue'
 
-// Get the `id` as a prop to use in RouterLink
+
 defineProps<{ countryId: string }>()
 </script>
 
 <style scoped>
 .sidebar {
   top: 60px;
-  background-color: #3b8ea5; /* Set your desired background color */
+  background-color: #3b8ea5;
 }
 .title {
   color: white;

@@ -1,34 +1,3 @@
-<!-- <template>
-  <div class="row pt-20">
-    <div class="col-md-6 offset-md-3">
-      <h3 class="text-center mb-4 mt-10">Login</h3>
-      <hr />
-      <form>
-        <div class="form-group">
-          <label class="form-label">Email</label>
-          <input type="text" class="form-control" placeholder="Email" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Password</label>
-          <input type="password" class="form-control" placeholder="Password" />
-        </div>
-        <div class="my-3">
-          <button
-            @click="submitComment"
-            class="px-4 py-2 bg-customRed text-white rounded hover:bg-customOrange"
-          >
-            Login
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</template>
- 
-<script>
-export default {}
-</script> -->
-
 <style scoped>
 h3 {
   font-weight: bold;
@@ -76,8 +45,8 @@ h3 {
     max-width: 80%;
   }
   .flex .w-full .max-w-md hr {
-    width: 10%; /* Adjusted to make the <hr> shorter on mobile */
-    margin: 1rem auto; /* Center the <hr> */
+    width: 10%; 
+    margin: 1rem auto; 
   }
 }
 

@@ -9,6 +9,7 @@
             </RouterLink>
           </div>
 
+          <!-- Desktop Links -->
           <div class="hidden md:flex items-center space-x-5 ml-auto">
             <template v-if="authStore.isAuthenticated">
               <RouterLink to="/profile" class="py-1 text-customDarkBlue border-b border-transparent hover:border-customBlue font-medium">Profile</RouterLink>
@@ -24,7 +25,7 @@
             <RouterLink to="/contactus" class="py-1 text-customDarkBlue border-b border-transparent hover:border-customBlue font-medium">Contact Us</RouterLink>
           </div>
 
-          <!-- button show mobile menu -->
+          <!-- Button to Show Mobile Menu -->
           <div class="md:hidden flex items-center">
             <button @click="showMobileMenu = !showMobileMenu" class="py-5 px-8">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-7">
@@ -32,6 +33,20 @@
               </svg>
             </button>
           </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div v-if="showMobileMenu" class="md:hidden bg-customYellow px-12 py-4">
+          <template v-if="authStore.isAuthenticated">
+            <RouterLink to="/profile" class="block py-1 text-customDarkBlue border-b border-transparent hover:border-customBlue font-medium">Profile</RouterLink>
+            <button @click="logout" class="block w-full text-left py-1 text-red-500 font-medium">Logout</button>
+          </template>
+          <template v-else>
+            <RouterLink to="/login" class="block py-1 text-customDarkBlue border-b border-transparent hover:border-customBlue font-medium">Login</RouterLink>
+            <RouterLink to="/signup" class="block py-1 text-customDarkBlue border-b border-transparent hover:border-customBlue font-medium">Sign Up</RouterLink>
+          </template>
+          <RouterLink v-if="authStore.isAdmin" to="/viewlist" class="block py-1 text-customDarkBlue border-b border-transparent hover:border-customBlue font-medium">View list</RouterLink>
+          <RouterLink to="/contactus" class="block py-1 text-customDarkBlue border-b border-transparent hover:border-customBlue font-medium">Contact Us</RouterLink>
         </div>
       </div>
     </div>
@@ -42,7 +57,7 @@
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
- 
+
 export default {
   setup() {
     const showMobileMenu = ref(false)
@@ -63,15 +78,13 @@ export default {
 }
 </script>
 
-
 <style scoped>
 /* Responsive styles for iPhone 14 Pro Max */
 @media (max-width: 430px) {
   .scrolled-nav {
-    background-color: #ffd700; /* Change to desired color */
+    background-color: #ffd700;
   }
 
-  /* Adjust padding and spacing for mobile */
   .py-5 {
     padding-top: 12px;
     padding-bottom: 12px;
@@ -82,19 +95,12 @@ export default {
     padding-right: 16px;
   }
 
-  /* Make sure to adjust font sizes as necessary */
   .text-customDarkBlue {
-    font-size: 16px; /* Adjust font size for better readability */
+    font-size: 16px;
   }
 
   .text-customDarkBlue.hover\:border-customBlue:hover {
-    border-color: #007bff; /* Ensure the hover effect is prominent */
-  }
-
-  /* Mobile menu links */
-  .block {
-    width: 100%; /* Full width for menu items */
-    text-align: left; /* Align text to the left */
+    border-color: #007bff;
   }
 }
 </style>

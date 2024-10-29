@@ -50,14 +50,14 @@ import { useRoute, useRouter } from 'vue-router'
 import { useCommentStore } from '@/stores/comment'
 import { useMessageStore } from '@/stores/message'
 import { useEventStore } from '@/stores/event'
-import { useAuthStore } from '@/stores/auth' // Import your authentication store
+import { useAuthStore } from '@/stores/auth' 
 
 const route = useRoute()
 const router = useRouter()
 const commentStore = useCommentStore()
 const messageStore = useMessageStore()
 const eventStore = useEventStore()
-const authStore = useAuthStore() // Initialize the auth store
+const authStore = useAuthStore() 
 const countryId = route.params.id as string
 
 // Define the event
@@ -115,8 +115,8 @@ async function submitComment() {
 
 // Function to get the country name based on the country ID
 function getCountryName(countryId: string) {
-  const event = eventStore.getEventById(countryId) // Fetch event based on countryId
-  return event?.name || 'Unknown Country' // Return country name or default
+  const event = eventStore.getEventById(countryId) 
+  return event?.name || 'Unknown Country' 
 }
 </script>
 

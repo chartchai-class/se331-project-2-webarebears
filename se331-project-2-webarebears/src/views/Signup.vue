@@ -127,10 +127,6 @@ const onSubmit = handleSubmit(async values => {
             :error="errors['password']"
           />
         </div>
-        <!-- <div class="form-group">
-          <label class="block text-left text-gray-700">Confirm Password</label>
-          <InputText v-model="password" type="password" class="form-control mt-1 w-full p-2 border rounded" placeholder="Confirm Password" :error="errors['password']" />
-        </div> -->
         <div class="my-3">
           <button
             type="submit"
@@ -145,7 +141,6 @@ const onSubmit = handleSubmit(async values => {
 </template>
 
 <style scoped>
-/* You can remove most of your previous CSS since Tailwind handles it now */
 h3 {
   font-weight: bold;
   color: #343a40;
@@ -159,7 +154,7 @@ hr {
 
 @media (max-width: 430px) {
   hr {
-    width: 95%; /* Shorter width on mobile */
+    width: 95%;
   }
 }
 </style>
